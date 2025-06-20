@@ -1,0 +1,14 @@
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+select = ["I", "E", "F", "W"]
+fixable = ["I"]
+ignore = ["W191"]
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+
+[tool.ruff.format]
+quote-style = "single"
+indent-style = "tab"
