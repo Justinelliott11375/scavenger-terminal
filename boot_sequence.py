@@ -10,6 +10,7 @@ from assets.boot_log_sequence_steps import (
 	restored_diagnostics_log,
 )
 from effects import Effects
+from rabbit import Rabbit
 
 
 def run_boot_sequence(console):
@@ -24,11 +25,11 @@ def run_boot_sequence(console):
 
 	print_log_with_sleeps(console=console, log=restored_diagnostics_log, sleep_between=1, sleep_after=3)
 	print_trace_log_panel(console)
-	console.print(
-		'[green]Awaiting input device retrieval and connection...[/green]',
-	)
+	# console.print(
+	# 	'[green]Awaiting input device retrieval and connection...[/green]',
+	# )
 
-	sleep(10)
+	# sleep(10)
 
 
 def print_language_banner_cycle():
@@ -56,7 +57,7 @@ def print_initial_boot_log_with_interrupt(console, effects):
 def print_initial_white_rabbit_interrupt_message(console, effects):
 	console.clear()
 	sleep(3)
-	effects.print_white_rabbit_message(text='Pay attention...')
+	Rabbit.say(text='Pay attention...')
 	effects.print_white_rabbit_message(text='The rabbit hole goes deeper...', glitch_chance=0)
 	effects.print_white_rabbit_message(text='Find the keyboard...', delay=0.2)
 

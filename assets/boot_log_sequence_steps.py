@@ -33,3 +33,9 @@ missing_keyboard_trace_log = [
 	'[bold green]  - Graphite trace[/bold green]',
 	'[bold green]  - Minor kinetic abrasion[/bold green]',
 ]
+
+keyboard_handshake_log = [
+	'[green]:: Handshake verified[/green]',
+	'[green]:: Input device successfully connected[/green]',
+	'[green]:: Initializing secure interface...[/green]',
+]

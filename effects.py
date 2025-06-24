@@ -10,6 +10,8 @@ from assets.noise_lines import noise_lines
 
 
 class Effects:
+	RABBIT_MESSAGE_PREFIX = 'ДД: '
+
 	def __init__(self, console: Console):
 		self.console = console
 
@@ -60,7 +62,7 @@ class Effects:
 
 	def glitch_type_out(self, text: str, delay: float = 0.075, glitch_chance=0.05, style='bold magenta'):
 		"""Type out text with occasional glitched characters and optional styling."""
-		text = f'ДД: {text}'
+		# for char in f'{self.RABBIT_MESSAGE_PREFIX}{text}':
 		for char in text:
 			# Randomly replace character
 			if random.random() < glitch_chance and char not in [' ', '.', ':', 'Д']:
@@ -75,8 +77,6 @@ class Effects:
 			sys.stdout.flush()
 			time.sleep(delay)
 
-		# self.console.print()  # Newline at end
-
 	def flash_noise_burst(self, count=15, delay=0.2, center=True):
 		cols = shutil.get_terminal_size().columns
 		for _ in range(count):
@@ -87,7 +87,6 @@ class Effects:
 
 			self.flash_and_clear(line, delay)
 
-	# Clean color pulse effect
 	def color_pulse(self, text, pulses=5, interval=0.1):
 		colors = ['red', 'yellow', 'green', 'cyan', 'magenta']
 		width = shutil.get_terminal_size().columns
