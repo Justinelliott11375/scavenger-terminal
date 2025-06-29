@@ -32,4 +32,4 @@ class Rabbit:
 	def nudge(self) -> None:
 		message = "Try typing 'help'. It won't bite."
 
-		self.say(message, glitch_chance=0, sleep_duration=2, after_action='backspace')
+		self.say(message, glitch_chance=0, sleep_duration=1, after_action='backspace')

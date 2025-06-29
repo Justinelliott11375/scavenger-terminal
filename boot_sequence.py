@@ -12,7 +12,7 @@ from assets.boot_log_sequence_steps import (
 from effects import Effects
 from rabbit import Rabbit
 
-
+#TODO: I don't think this file is being used anymore
 def run_boot_sequence(console):
 	effects = Effects(console)
 	console.clear()
@@ -57,7 +57,7 @@ def print_initial_boot_log_with_interrupt(console, effects):
 def print_initial_white_rabbit_interrupt_message(console, effects):
 	console.clear()
 	sleep(3)
-	Rabbit.say(text='Pay attention...')
+	effects.print_white_rabbit_message(text='Pay attention...')
 	effects.print_white_rabbit_message(text='The rabbit hole goes deeper...', glitch_chance=0)
 	effects.print_white_rabbit_message(text='Find the keyboard...', delay=0.2)
 

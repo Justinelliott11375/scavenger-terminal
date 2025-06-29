@@ -23,6 +23,23 @@ class CommandHandler:
 			return 'Enhancing signal...\n[green]Signal clarity improved by 37%[/green]'
 		elif command == 'exit':
 			return '[red]Session terminated.[/red]'
+		elif command == 'quest':
+			# TODO: this is test output for pagination, clean up and extract
+			return  [
+				"//// CURRENT OBJECTIVE ////",
+				"",
+				"Status: Peripheral input missing",
+				"",
+				"A trace was initiated to locate the missing device.",
+				"Latest result suggests a physical logbook nearby contains",
+				"a partial record of the input’s last known status.",
+				"",
+				"Match reference code: 52F",
+				"Note: Several logs exist in the area. Only one matches 52F.",
+				"",
+				"//// Use your surroundings to locate the correct log ////"
+			]
+
 		else:
 			return "[yellow]Unknown command.[/yellow] Type 'help' for a list of valid commands."
 
@@ -31,11 +48,11 @@ class CommandHandler:
 		table.add_column('Command', style='cyan', no_wrap=True)
 		table.add_column('Description', style='dim')
 
-		table.add_row('help', 'Display this command list')
-		table.add_row('scan', 'Scan system memory and environment for actionable data')
-		table.add_row('quest', 'Review current objectives')
+		table.add_row('help', 'Display the list of available commands')
+		table.add_row('scan', 'Show system status')
+		table.add_row('quest', 'Summarize current objective')
 		table.add_row('clear', 'Clear the terminal screen')
-		table.add_row('exit', 'Terminate session')
+		# table.add_row('exit', 'Terminate session')
 
 		self.console.print(table)
 
@@ -49,21 +66,21 @@ class CommandHandler:
 		) as progress:
 			task = progress.add_task('[cyan]Scanning subsystems...', total=100)
 
-			for i in range(0, 101, 10):
+			for i in range(0, 100, 2):
 				sleep(0.1)  # optional: longer delay based on stage
-				progress.update(task, advance=5)
+				progress.update(task, advance=2)
 
+		# Extract this to somewhere else
 		self.console.print(
 			Panel.fit(
 				'\n'.join(
 					[
-						'[bold green]✔[/bold green] Core system: Stable',
-						'[bold yellow]▲[/bold yellow] External interface: Partial functionality',
-						'[bold red]✖[/bold red] Subnet 04: No response',
-						'[bold cyan]...[/bold cyan] Location triangulation pending...',
-						'',
-						'[dim]Hint: Clarity improves with signal strength.[/dim]',
-						'[dim]Hint: Noise reduction may reveal intent.[/dim]',
+						'[green]System scan complete',
+						'Restoration progress: [bold green]11%[/bold green]',
+						'Online subsystems: [bold green]CORE, INTERFACE[/bold green]',
+						# TODO: check these as we move forward, don't know what memory and signal are atm
+						'Offline subsystems: [bold red]AUDIO, MEMORY, SIGNAL[/bold red]',
+						'[dim]Unread fragments detected: 1[/dim][/green]',
 					]
 				),
 				title='SCAN RESULTS',

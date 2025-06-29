@@ -1,4 +1,6 @@
 from time import sleep
+from typing import List
+from readchar import readkey
 
 from readchar import readkey
 from rich.console import Console
@@ -86,7 +88,13 @@ class TerminalSession:
 			title='Trace Log: WR-NIVENS-KEYBOARD',
 			title_align='left',
 		)
-		self.console.print(trace_log_panel)
+		# self.console.print(trace_log_panel)
+		self.paginate_panel_output(
+			lines=missing_keyboard_trace_log,
+			title='Trace Log: WR-NIVENS-KEYBOARD',
+			page_size=3,
+		)
+
 
 	def wait_for_keyboard_input(self):
 		self.console.print('[cyan]:: Awaiting input device handshake...[/cyan]')
@@ -115,6 +123,80 @@ class TerminalSession:
 				print(f'Command entered: {command}')
 				result = self.command_handler.handle_command(command)
 				if result:
-					self.console.print(result)
+					self.scroll_lines(result)
 				if command.strip().lower() == 'exit':
 					break
+
+	def scroll_lines(self, lines, height=5):
+		top_line = 0
+		max_top = max(0, len(lines) - height)
+
+		while True:
+			self.console.clear()
+			for line in lines[top_line:top_line + height]:
+				self.console.print(line)
+			self.console.print(f"[dim]↑↓ to scroll, q to quit[/dim]")
+
+			key = readkey()
+			if key in ('q', '\x03'):
+				break
+			elif key == '\x1b[A' and top_line > 0:  # Up
+				top_line -= 1
+			elif key == '\x1b[B' and top_line < max_top:  # Down
+				top_line += 1
+
+	def paginate_output(self, lines: List[str], page_size: int = 6):
+		current_page = 0
+		total_pages = (len(lines) + page_size - 1) // page_size
+
+		while True:
+			self.console.clear()
+			start = current_page * page_size
+			end = start + page_size
+			for line in lines[start:end]:
+				self.console.print(line)
+
+			self.console.print(f"\n[dim]Page {current_page+1} of {total_pages} — Press ↑/↓ to scroll, q to quit[/dim]")
+
+			key = readkey()
+			if key in ('q', '\x03'):  # q or Ctrl+C
+				break
+			elif key == '\x1b[A':  # up
+				if current_page > 0:
+					current_page -= 1
+			elif key == '\x1b[B':  # down
+				if current_page < total_pages - 1:
+					current_page += 1
+
+	def paginate_panel_output(self, lines, title="Help", page_size=3):
+		current_page = 0
+		self.console.print(lines)
+		self.console.print(len(lines))
+		total_pages = (len(lines) + page_size - 1) // page_size
+		self.console.print(f"[bold green]{title}[/bold green] - Total Pages: {total_pages}")
+
+		while True:
+			self.console.clear()
+
+			# Get current slice
+			start = current_page * page_size
+			end = start + page_size
+			visible_lines = lines[start:end]
+
+			# Create panel with visible lines
+			panel_text = "\n".join(visible_lines)
+			panel = Panel(panel_text, title=f"{title} (Page {current_page + 1}/{total_pages})")
+			self.console.print(panel)
+
+			self.console.print("[dim]Use ↑ / ↓ to scroll, or 'q' to exit[/dim]")
+
+			# Wait for input
+			key = readkey()
+			if key in ('q', '\x03'):  # 'q' or Ctrl+C
+				break
+			elif key == '\x1b[A':  # Up arrow
+				if current_page > 0:
+					current_page -= 1
+			elif key == '\x1b[B':  # Down arrow
+				if current_page < total_pages - 1:
+					current_page += 1
