@@ -22,7 +22,7 @@ class CommandHandler:
 		elif command == 'enhance':
 			return 'Enhancing signal...\n[green]Signal clarity improved by 37%[/green]'
 		elif command == 'exit':
-			return '[red]Session terminated.[/red]'
+			return ['[red]Session terminated.[/red]']
 		elif command == 'quest':
 			# TODO: this is test output for pagination, clean up and extract
 			return  [

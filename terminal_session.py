@@ -127,7 +127,7 @@ class TerminalSession:
 				if command.strip().lower() == 'exit':
 					break
 
-	def scroll_lines(self, lines, height=5):
+	def scroll_lines(self, lines, height=10):
 		top_line = 0
 		max_top = max(0, len(lines) - height)
 
