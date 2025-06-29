@@ -128,23 +128,47 @@ class TerminalSession:
 					break
 
 	def scroll_lines(self, lines, height=10):
+		wrapped_lines = self.hard_wrap(lines)
+
 		top_line = 0
-		max_top = max(0, len(lines) - height)
+		max_top = max(0, len(wrapped_lines) - height)
+
+		# Initial render
+		self.console.clear()
+		for line in wrapped_lines[top_line:top_line + height]:
+			self.console.print(line)
+		self.console.print(f"[dim]↑↓ to scroll ({top_line+1}-{min(top_line+height, len(wrapped_lines))}/{len(wrapped_lines)}), q to quit[/dim]")
 
 		while True:
-			self.console.clear()
-			for line in lines[top_line:top_line + height]:
-				self.console.print(line)
-			self.console.print(f"[dim]↑↓ to scroll, q to quit[/dim]")
-
 			key = readkey()
+			previous_top = top_line
+
 			if key in ('q', '\x03'):
 				break
-			elif key == '\x1b[A' and top_line > 0:  # Up
-				top_line -= 1
-			elif key == '\x1b[B' and top_line < max_top:  # Down
-				top_line += 1
+			elif key == '\x1b[A':  # Up
+				if top_line > 0:
+					top_line -= 1
+			elif key == '\x1b[B':  # Down
+				if top_line < max_top:
+					top_line += 1
 
+			if top_line != previous_top:
+				self.console.clear()
+				for line in wrapped_lines[top_line:top_line + height]:
+					self.console.print(line)
+				self.console.print(f"[dim]↑↓ to scroll ({top_line+1}-{min(top_line+height, len(wrapped_lines))}/{len(wrapped_lines)}), q to quit[/dim]")
+
+	@staticmethod
+	def hard_wrap(lines: list[str], width: int = 38) -> list[str]:
+		wrapped = []
+		for line in lines:
+			while len(line) > width:
+				wrapped.append(line[:width])
+				line = line[width:]
+			wrapped.append(line)
+		return wrapped
+
+	# TODO: probably don't need this anymore
 	def paginate_output(self, lines: List[str], page_size: int = 6):
 		current_page = 0
 		total_pages = (len(lines) + page_size - 1) // page_size
