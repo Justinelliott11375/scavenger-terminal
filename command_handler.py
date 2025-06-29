@@ -38,6 +38,7 @@ class CommandHandler:
 				"Note: Several logs exist in the area. Only one matches 52F.",
 				"",
 				"//// Use your surroundings to locate the correct log ////"
+				''
 				'testing length 17 20 23 26 29 32 35 38 41 44 47 50 53 56 59 62',
 			]
 
