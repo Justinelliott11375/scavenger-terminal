@@ -127,6 +127,15 @@ class TerminalSession:
 				if command.strip().lower() == 'exit':
 					break
 
+	def render_output(self, lines: list[str], width: int = 38, height: int = 12):
+		wrapped_lines = self.hard_wrap(lines, width)
+
+		if len(wrapped_lines) > height:
+			self.scroll_lines(wrapped_lines, height)
+		else:
+			for line in lines:
+				self.console.print(line)
+
 	def scroll_lines(self, lines, height=10):
 		wrapped_lines = self.hard_wrap(lines)
 
