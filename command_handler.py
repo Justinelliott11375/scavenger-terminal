@@ -26,19 +26,26 @@ class CommandHandler:
 		elif command == 'quest':
 			# TODO: this is test output for pagination, clean up and extract
 			return  [
-				"//// CURRENT OBJECTIVE ////",
-				"",
-				"Status: Peripheral input missing",
-				"",
-				"A trace was initiated to locate the missing device.",
-				"Latest result suggests a physical logbook nearby contains",
-				"a partial record of the input’s last known status.",
-				"",
-				"Match reference code: 52F",
-				"Note: Several logs exist in the area. Only one matches 52F.",
-				"",
-				"//// Use your surroundings to locate the correct log ////"
-				''
+				'testing length 17 20 23 26 29 32 35 38 41 44 47 50 53 56 59 62',
+				'testing length 17 20 23 26 29 32 35 38 41 44 47 50 53 56 59 62',
+				'testing length 17 20 23 26 29 32 35 38 41 44 47 50 53 56 59 62',
+				'testing length 17 20 23 26 29 32 35 38 41 44 47 50 53 56 59 62',
+				'testing length 17 20 23 26 29 32 35 38 41 44 47 50 53 56 59 62',
+				'testing length 17 20 23 26 29 32 35 38 41 44 47 50 53 56 59 62',
+				'testing length 17 20 23 26 29 32 35 38 41 44 47 50 53 56 59 62',
+				# "//// CURRENT OBJECTIVE ////",
+				# "",
+				# "Status: Peripheral input missing",
+				# "",
+				# "A trace was initiated to locate the missing device.",
+				# "Latest result suggests a physical logbook nearby contains",
+				# "a partial record of the input’s last known status.",
+				# "",
+				# "Match reference code: 52F",
+				# "Note: Several logs exist in the area. Only one matches 52F.",
+				# "",
+				# "//// Use your surroundings to locate the correct log ////"
+				# ''
 				'testing length 17 20 23 26 29 32 35 38 41 44 47 50 53 56 59 62',
 			]
 
