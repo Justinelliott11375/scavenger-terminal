@@ -97,13 +97,7 @@ class TerminalSession:
 			title='Trace Log: WR-NIVENS-KEYBOARD',
 			title_align='left',
 		)
-		# self.console.print(trace_log_panel)
-		self.paginate_panel_output(
-			lines=missing_keyboard_trace_log,
-			title='Trace Log: WR-NIVENS-KEYBOARD',
-			page_size=3,
-		)
-
+		self.console.print(trace_log_panel)
 
 	def wait_for_keyboard_input(self):
 		self.console.print('[cyan]:: Awaiting input device handshake...[/cyan]')
@@ -139,10 +133,14 @@ class TerminalSession:
 
 	def render_output(self, lines: list[str], width: int = 38, height: int = 12):
 		wrapped_lines = self.hard_wrap(lines, width)
+		self.console.print(f'len(wrapped_lines)={len(wrapped_lines)}, height={height}, width={width}')
+		sleep(3)
 
 		if len(wrapped_lines) > height:
+			self.console.print(f'[dim]Output is too long, scrolling enabled. Use ↑/↓ to scroll, q to quit.[/dim]')
 			self.scroll_lines(wrapped_lines, height)
 		else:
+			self.console.print(f'[dim]Output is short enough, displaying all lines.[/dim]')
 			for line in lines:
 				self.console.print(line)
 
@@ -159,6 +157,7 @@ class TerminalSession:
 			self.console.print(line)
 		if len(wrapped_lines) > height:
 			self.console.print(f"[dim]↑↓ to scroll ({top_line+1}-{min(top_line+height, len(wrapped_lines))}/{len(wrapped_lines)}), q to quit[/dim]")
+
 
 			while True:
 				key = readkey()
@@ -215,10 +214,10 @@ class TerminalSession:
 
 	def paginate_panel_output(self, lines, title="Help", page_size=3):
 		current_page = 0
-		self.console.print(lines)
-		self.console.print(len(lines))
+		# self.console.print(lines)
+		# self.console.print(len(lines))
 		total_pages = (len(lines) + page_size - 1) // page_size
-		self.console.print(f"[bold green]{title}[/bold green] - Total Pages: {total_pages}")
+		# self.console.print(f"[bold green]{title}[/bold green] - Total Pages: {total_pages}")
 
 		while True:
 			self.console.clear()
