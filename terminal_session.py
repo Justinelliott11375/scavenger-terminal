@@ -1,5 +1,7 @@
 from time import sleep
 from typing import List
+import time
+from random import choice
 from readchar import readkey
 
 from readchar import readkey
@@ -16,18 +18,22 @@ from assets.boot_log_sequence_steps import (
 	missing_keyboard_trace_log,
 	restored_diagnostics_log,
 )
+from game_state import GameState
 from command_handler import CommandHandler
 from effects import Effects
 from rabbit import Rabbit
+from matrix_rain import Matrix
 
 
 class TerminalSession:
 	def __init__(self):
+		self.state = GameState()
 		self.console = Console()
 		self.effects = Effects(self.console)
 		self.rabbit = Rabbit(self)
+		# self.matrix = Matrix(duration=5)
 		self.command_handler = CommandHandler(self.console)
-		self.state = {'keyboard_connected': False, 'available_commands': ['help', 'status', 'exit']}
+		# self.state = {'keyboard_connected': False, 'available_commands': ['help', 'status', 'exit']}
 
 	def run(self):
 		self.run_boot_sequence()
@@ -35,6 +41,9 @@ class TerminalSession:
 		self.start_interactive_session()
 
 	def run_boot_sequence(self):
+		self.console.clear()
+		matrix = Matrix(wait=100, glitch_freq=100, drop_freq=100, duration=5)
+		matrix.start()
 		self.console.clear()
 
 		self.print_language_banner_cycle()
@@ -103,6 +112,7 @@ class TerminalSession:
 			key = readkey()
 			self.console.print(f'[blue]:: Received input: "{key}"[/blue]')
 			if key is not None:
+				self.state.connect_keyboard()
 				sleep(1)
 				break
 			sleep(0.1)
@@ -144,28 +154,30 @@ class TerminalSession:
 
 		# Initial render
 		self.console.clear()
+
 		for line in wrapped_lines[top_line:top_line + height]:
 			self.console.print(line)
-		self.console.print(f"[dim]↑↓ to scroll ({top_line+1}-{min(top_line+height, len(wrapped_lines))}/{len(wrapped_lines)}), q to quit[/dim]")
+		if len(wrapped_lines) > height:
+			self.console.print(f"[dim]↑↓ to scroll ({top_line+1}-{min(top_line+height, len(wrapped_lines))}/{len(wrapped_lines)}), q to quit[/dim]")
 
-		while True:
-			key = readkey()
-			previous_top = top_line
+			while True:
+				key = readkey()
+				previous_top = top_line
 
-			if key in ('q', '\x03'):
-				break
-			elif key == '\x1b[A':  # Up
-				if top_line > 0:
-					top_line -= 1
-			elif key == '\x1b[B':  # Down
-				if top_line < max_top:
-					top_line += 1
+				if key in ('q', '\x03'):
+					break
+				elif key == '\x1b[A':  # Up
+					if top_line > 0:
+						top_line -= 1
+				elif key == '\x1b[B':  # Down
+					if top_line < max_top:
+						top_line += 1
 
-			if top_line != previous_top:
-				self.console.clear()
-				for line in wrapped_lines[top_line:top_line + height]:
-					self.console.print(line)
-				self.console.print(f"[dim]↑↓ to scroll ({top_line+1}-{min(top_line+height, len(wrapped_lines))}/{len(wrapped_lines)}), q to quit[/dim]")
+				if top_line != previous_top:
+					self.console.clear()
+					for line in wrapped_lines[top_line:top_line + height]:
+						self.console.print(line)
+					self.console.print(f"[dim]↑↓ to scroll ({top_line+1}-{min(top_line+height, len(wrapped_lines))}/{len(wrapped_lines)}), q to quit[/dim]")
 
 	@staticmethod
 	def hard_wrap(lines: list[str], width: int = 38) -> list[str]:

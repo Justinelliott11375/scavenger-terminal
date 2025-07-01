@@ -13,6 +13,7 @@ class CommandHandler:
 		command = command.strip().lower()
 
 		# This is gross, refactor to handle the ever-growing list of commands more gracefully
+		# TODO: maybe switch/case or a dictionary mapping commands to methods
 		if command == 'help':
 			self.handle_help()
 		elif command == 'scan':
@@ -25,32 +26,24 @@ class CommandHandler:
 			return ['[red]Session terminated.[/red]']
 		elif command == 'quest':
 			# TODO: this is test output for pagination, clean up and extract
+			# TODO: also, this will need to be dynamic and change over the course of the game
 			return  [
-				'testing length 17 20 23 26 29 32 35 38 41 44 47 50 53 56 59 62',
-				'testing length 17 20 23 26 29 32 35 38 41 44 47 50 53 56 59 62',
-				'testing length 17 20 23 26 29 32 35 38 41 44 47 50 53 56 59 62',
-				'testing length 17 20 23 26 29 32 35 38 41 44 47 50 53 56 59 62',
-				'testing length 17 20 23 26 29 32 35 38 41 44 47 50 53 56 59 62',
-				'testing length 17 20 23 26 29 32 35 38 41 44 47 50 53 56 59 62',
-				'testing length 17 20 23 26 29 32 35 38 41 44 47 50 53 56 59 62',
-				# "//// CURRENT OBJECTIVE ////",
+				"//// CURRENT OBJECTIVE ////",
 				# "",
 				# "Status: Peripheral input missing",
 				# "",
-				# "A trace was initiated to locate the missing device.",
-				# "Latest result suggests a physical logbook nearby contains",
-				# "a partial record of the input’s last known status.",
-				# "",
-				# "Match reference code: 52F",
-				# "Note: Several logs exist in the area. Only one matches 52F.",
-				# "",
-				# "//// Use your surroundings to locate the correct log ////"
-				# ''
-				'testing length 17 20 23 26 29 32 35 38 41 44 47 50 53 56 59 62',
+# 				ДД: “Fragments remain. Voices caught in static...
+# I remember questions. Three of them. I wrote them down once. Somewhere real.”
+				'[HINT] ARCHIVE NODE v014-C marked for physical containment',
+				'Classification: FRAGMENTED TEXTUAL MEMORY',
+				'Storage Medium: Hardcopy (Local)',
+				'Recovery Method: Manual Retrieval',
 			]
-
+		# Figure out a better name for this
+		elif command == 'audio clue deciphered':
+			return
 		else:
-			return "[yellow]Unknown command.[/yellow] Type 'help' for a list of valid commands."
+			return ["[yellow]Unknown command.[/yellow] Type 'help' for a list of valid commands."]
 
 	def handle_help(self):
 		table = Table(show_header=True, header_style='bold green')
