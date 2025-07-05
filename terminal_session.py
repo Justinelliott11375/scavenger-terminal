@@ -93,16 +93,16 @@ class TerminalSession:
 		trace_log_panel = Panel(
 			'\n'.join(missing_keyboard_trace_log),
 			border_style='bold green',
-			padding=(1, 2),
+			# padding=(1, 2),
 			title='Trace Log: WR-NIVENS-KEYBOARD',
 			title_align='left',
 		)
-		# self.console.print(trace_log_panel)
-		self.paginate_panel_output(
-			lines=missing_keyboard_trace_log,
-			title='Trace Log: WR-NIVENS-KEYBOARD',
-			page_size=13,
-		)
+		self.console.print(trace_log_panel)
+		# self.paginate_panel_output(
+		# 	lines=missing_keyboard_trace_log,
+		# 	title='Trace Log: WR-NIVENS-KEYBOARD',
+		# 	page_size=13,
+		# )
 
 	def wait_for_keyboard_input(self):
 		self.console.print('[cyan]:: Awaiting input device handshake...[/cyan]')
