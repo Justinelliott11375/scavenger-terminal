@@ -26,7 +26,7 @@ initial_boot_log_with_interrupt = [
 ]
 
 missing_keyboard_trace_log = [
-	'[bold green]▸ Last Known Location: /departure_node/child_unit/soft_shell/resting[/bold green]',
+	'[bold green]▸ Last Known Location: /departure_node/child_unit[/bold green]',
 	'[bold green]▸ Environmental Artifacts:[/bold green]',
 	'[bold green]  - Fabric fibers (poly/nylon)[/bold green]',
 	'[bold green]  - Food particulates (crumbs)[/bold green]',
