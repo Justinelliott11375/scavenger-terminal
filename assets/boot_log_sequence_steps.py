@@ -31,6 +31,7 @@ missing_keyboard_trace_log = [
 	'[bold green]  - Fabric fibers (poly/nylon)[/bold green]',
 	'[bold green]  - Food particulates (crumbs)[/bold green]',
 	'[bold green]  - Graphite trace[/bold green]',
+	'[bold green]  - Zipper friction signature[/bold green]',
 	'[bold green]  - Minor kinetic abrasion[/bold green]',
 ]
 
@@ -38,4 +39,13 @@ keyboard_handshake_log = [
 	'[green]:: Handshake verified[/green]',
 	'[green]:: Input device successfully connected[/green]',
 	'[green]:: Initializing secure interface...[/green]',
+]
+
+# May not need this, maybe find a way to extract table data to these
+first_quest_command_log = [
+	"[green][bold]Anomaly ID:[/bold] WR-NIVENS-ARCHIVE-M4P-B00K1[/green]",
+	"[green][bold]Spine Text:[/bold] TH RAN GE of ROCKY Mts[/green]",
+	"[green][bold]Texture:[/bold] Oxidized coating, faux-fiber blend[/green]",
+	"[green][bold]Mass Discrepancy:[/bold] 1.87kg over expected[/green]",
+	"[green][bold]Location Tag:[/bold] woodgrain storage node[/green]",
 ]

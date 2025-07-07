@@ -3,7 +3,10 @@ from time import sleep
 from rich.panel import Panel
 from rich.progress import BarColumn, Progress
 from rich.table import Table
-
+from assets.boot_log_sequence_steps import (
+	first_quest_command_log,
+)
+from terminal_output import TerminalOutput
 
 class CommandHandler:
 	def __init__(self, console):
@@ -15,30 +18,20 @@ class CommandHandler:
 		# This is gross, refactor to handle the ever-growing list of commands more gracefully
 		# TODO: maybe switch/case or a dictionary mapping commands to methods
 		if command == 'help':
-			self.handle_help()
+			return self.handle_help()
 		elif command == 'scan':
-			self.handle_scan()
+			return self.handle_scan()
 		elif command == 'status':
 			return 'Subsystem status:\n- Audio: OK\n- Visual: Calibrated\n- Lock: Standby'
 		elif command == 'enhance':
 			return 'Enhancing signal...\n[green]Signal clarity improved by 37%[/green]'
 		elif command == 'exit':
-			return ['[red]Session terminated.[/red]']
+			return TerminalOutput(
+				lines=['[red]Session terminated.[/red]'],
+				scrollable=False,
+			)
 		elif command == 'quest':
-			# TODO: this is test output for pagination, clean up and extract
-			# TODO: also, this will need to be dynamic and change over the course of the game
-			return  [
-				"//// CURRENT OBJECTIVE ////",
-				# "",
-				# "Status: Peripheral input missing",
-				# "",
-# 				ДД: “Fragments remain. Voices caught in static...
-# I remember questions. Three of them. I wrote them down once. Somewhere real.”
-				'[HINT] ARCHIVE NODE v014-C marked for physical containment',
-				'Classification: FRAGMENTED TEXTUAL MEMORY',
-				'Storage Medium: Hardcopy (Local)',
-				'Recovery Method: Manual Retrieval',
-			]
+			return self.handle_quest()
 		# Figure out a better name for this
 		elif command == 'audio clue deciphered':
 			return
@@ -56,7 +49,10 @@ class CommandHandler:
 		table.add_row('clear', 'Clear the terminal screen')
 		# table.add_row('exit', 'Terminate session')
 
-		self.console.print(table)
+		# self.console.print(table)
+		return TerminalOutput(
+			renderable=table
+		)
 
 	def handle_scan(self):
 		with Progress(
@@ -73,9 +69,11 @@ class CommandHandler:
 				progress.update(task, advance=2)
 
 		# Extract this to somewhere else
-		self.console.print(
-			Panel.fit(
+		# self.console.print(
+		return TerminalOutput(
+			renderable=Panel.fit(
 				'\n'.join(
+					# This will either need to be a lot of separate blobs, or dynamically generated
 					[
 						'[green]System scan complete',
 						'Restoration progress: [bold green]11%[/bold green]',
@@ -86,6 +84,21 @@ class CommandHandler:
 					]
 				),
 				title='SCAN RESULTS',
-				border_style='white',
+				border_style='green',
 			)
 		)
+
+	def handle_quest(self):
+		return TerminalOutput(
+			renderable=Panel.fit(
+				'\n'.join(
+					first_quest_command_log
+				),
+				title='/// Current Objective ///',
+				border_style='green',
+			)
+		)
+		return TerminalOutput(
+				lines=first_quest_command_log,
+				scrollable=False,
+			)

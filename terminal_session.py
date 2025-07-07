@@ -42,7 +42,7 @@ class TerminalSession:
 
 	def run_boot_sequence(self):
 		self.console.clear()
-		matrix = Matrix(wait=100, glitch_freq=100, drop_freq=100, duration=5)
+		matrix = Matrix(wait=100, glitch_freq=100, drop_freq=100, duration=7)
 		matrix.start()
 		self.console.clear()
 
@@ -81,7 +81,7 @@ class TerminalSession:
 		sleep(3)
 		self.rabbit.say(text='Pay attention...')
 		self.rabbit.say(text='The rabbit hole goes deeper...', glitch_chance=0)
-		self.rabbit.say(text='Find the keyboard...', delay=0.2)
+		self.rabbit.say(text='Find the keyboard...', delay=0.2, glitch_chance=0)
 
 	def print_log_with_sleeps(self, log, sleep_between=2, sleep_after=3):
 		for step in log:
@@ -129,15 +129,23 @@ class TerminalSession:
 				has_prompt_nudged = True
 			else:
 				command = self.console.input('[green]>> [/green]')
-				print(f'Command entered: {command}')
+				self.console.print(f'[green]Command entered: [bold]{command}[/bold][/green]')
 				result = self.command_handler.handle_command(command)
-				if result:
-					self.scroll_lines(result)
-				if command.strip().lower() == 'exit':
-					break
 
-	def render_output(self, lines: list[str], width: int = 38, height: int = 12):
-		wrapped_lines = self.hard_wrap(lines, width)
+				if result.renderable:
+					self.console.print(result.renderable)
+				elif result.scrollable:
+					self.scroll_lines(result.lines)
+				elif result.lines:
+					for line in result.lines:
+						self.console.print(line)
+					if command.strip().lower() == 'exit':
+						break
+
+
+	# TODO: remove the wrap bool if we don't use it
+	def render_output(self, lines: list[str], width: int = 38, height: int = 12, wrap: bool = True):
+		wrapped_lines = self.hard_wrap(lines, width) if wrap else lines
 		self.console.print(f'len(wrapped_lines)={len(wrapped_lines)}, height={height}, width={width}')
 		sleep(3)
 
