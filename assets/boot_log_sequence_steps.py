@@ -50,7 +50,7 @@ chess_piece_book_log = [
 ]
 
 treasure_island_book_log = [
-	"[green][bold]Anomaly ID:[/bold] WR-NIVENS-ARCHIVE-T5R-15LD-BK2[/green]",
+	"[green][bold]Anomaly ID:[/bold] WR-NIVENS-T5R-15LD-BK2[/green]",
 	"[green][bold]Structure:[/bold] Encyclopedia-class narrative shell[/green]",
 	"[green][bold]Mass Discrepancy:[/bold] Solid core, no leaf structure[/green]",
 	"[green][bold]Auth Layer:[/bold] Requires MONARCH token[/green]",
