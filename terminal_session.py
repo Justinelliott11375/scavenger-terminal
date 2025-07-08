@@ -94,7 +94,7 @@ class TerminalSession:
 			'\n'.join(missing_keyboard_trace_log),
 			border_style='bold green',
 			# padding=(1, 2),
-			title='Trace Log: WR-NIVENS-KEYBOARD',
+			title='Trace Log: WR-NIVENS-K3YBRD',
 			title_align='left',
 		)
 		self.console.print(trace_log_panel)

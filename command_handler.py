@@ -4,7 +4,7 @@ from rich.panel import Panel
 from rich.progress import BarColumn, Progress
 from rich.table import Table
 from assets.boot_log_sequence_steps import (
-	first_quest_command_log,
+	treasure_island_book_log
 )
 from terminal_output import TerminalOutput
 
@@ -92,13 +92,9 @@ class CommandHandler:
 		return TerminalOutput(
 			renderable=Panel.fit(
 				'\n'.join(
-					first_quest_command_log
+					treasure_island_book_log
 				),
 				title='/// Current Objective ///',
 				border_style='green',
 			)
 		)
-		return TerminalOutput(
-				lines=first_quest_command_log,
-				scrollable=False,
-			)
