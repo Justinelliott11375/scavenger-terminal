@@ -12,7 +12,8 @@ from assets.boot_log_sequence_steps import (
 from effects import Effects
 from rabbit import Rabbit
 
-#TODO: I don't think this file is being used anymore
+
+# TODO: I don't think this file is being used anymore
 def run_boot_sequence(console):
 	effects = Effects(console)
 	console.clear()

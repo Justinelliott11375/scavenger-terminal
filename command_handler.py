@@ -3,14 +3,15 @@ from time import sleep
 from rich.panel import Panel
 from rich.progress import BarColumn, Progress
 from rich.table import Table
-from assets.boot_log_sequence_steps import (
-	treasure_island_book_log
-)
+
+from assets.boot_log_sequence_steps import chess_piece_book_log, treasure_island_book_log
 from terminal_output import TerminalOutput
 
+
 class CommandHandler:
-	def __init__(self, console):
-		self.console = console
+	def __init__(self, terminal_session):
+		self.terminal_session = terminal_session
+		self.console = terminal_session.console
 
 	def handle_command(self, command: str) -> str:
 		command = command.strip().lower()
@@ -25,6 +26,10 @@ class CommandHandler:
 			return 'Subsystem status:\n- Audio: OK\n- Visual: Calibrated\n- Lock: Standby'
 		elif command == 'enhance':
 			return 'Enhancing signal...\n[green]Signal clarity improved by 37%[/green]'
+		elif command == 'dev-test-hub':
+			if self.terminal_session.state.is_initial():
+				self.terminal_session.state.discover_treasure_island_book()
+			return TerminalOutput(lines=['[green]Treasure Island book discovered.[/green]'], scrollable=False)
 		elif command == 'exit':
 			return TerminalOutput(
 				lines=['[red]Session terminated.[/red]'],
@@ -50,9 +55,7 @@ class CommandHandler:
 		# table.add_row('exit', 'Terminate session')
 
 		# self.console.print(table)
-		return TerminalOutput(
-			renderable=table
-		)
+		return TerminalOutput(renderable=table)
 
 	def handle_scan(self):
 		with Progress(
@@ -89,11 +92,16 @@ class CommandHandler:
 		)
 
 	def handle_quest(self):
+		# TODO: look into a cleaner way to word states and transitions, this feels weird
+		log = (
+			treasure_island_book_log
+			if self.terminal_session.state.is_initial()
+			else chess_piece_book_log
+		)
+
 		return TerminalOutput(
 			renderable=Panel.fit(
-				'\n'.join(
-					treasure_island_book_log
-				),
+				'\n'.join(log),
 				title='/// Current Objective ///',
 				border_style='green',
 			)

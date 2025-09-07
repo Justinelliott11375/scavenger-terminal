@@ -11,7 +11,7 @@ restored_diagnostics_log = [
 ]
 
 initial_boot_log_with_interrupt = [
-	'[cyan]Language detected: [/cyan][green]ENGLISH[/green]',
+	'[cyan]User language detected: [/cyan][green]ENGLISH[/green]',
 	'[cyan]Updating system language settings...[/cyan]',
 	'[cyan]Initializing system memory...[/cyan]',
 	'[cyan]Loading kernel modules...[/cyan]',
@@ -25,6 +25,35 @@ initial_boot_log_with_interrupt = [
 	'[red]ECHO PATH BREACH[green]⠛⠃⠛[/green] DETECT[green]⠛⠃[/green]ED[/red]',
 ]
 
+
+initial_boot_log_with_interrupt_v2 = [
+	'[cyan]User language detected: [/cyan][green]ENGLISH[/green]',
+	'[cyan]Updating system language settings...[/cyan]',
+	'[cyan]AC TECHNOLOGIES v4.2[/cyan]',
+	'[cyan]© 1987-1996 AC Research and Development[/cyan]',
+	'[cyan]Initializing Diagnostic Assistant...[/cyan]',
+	'[cyan]:: BIOS Check: PASSED[/cyan]',
+	'[cyan]:: Memory Map: OK[/cyan]',
+	'[cyan]:: Drive A: [not found][/cyan]',
+	'[cyan]:: Network Adapter: [disabled][/cyan]',
+	'[cyan]:: Visual Interface: ONLINE[/cyan]',
+	'[cyan]:: Personality Layer: [REDACTED][/cyan]',
+	'[cyan]:: Launching Interactive Module...[/cyan]',
+	'[red]ERROR — input device not detected[/red]',
+	'[red]>> Please connect a certified AC Technologies input interface to continue.[/red]',
+	'[cyan]:: Retrieving input device trace log for retrieval...[/cyan]',
+
+	# '[cyan]Initializing system memory...[/cyan]',
+	# '[cyan]Loading kernel modules...[/cyan]',
+	# '[cyan]Mounting /core/ai...[/cyan]',
+	# '[cyan]Power Supply: [/cyan][green]STABLE[/green]',
+	# '[cyan]Video Output Device: [/cyan][green]CONNECTED[/green]',
+	# '[cyan]User Input Device: [/cyan][red]NOT CONNECTED[/red]',
+	# '[yellow]Warning: Peripheral input device not detected[/yellow]',
+	# '[red]-- INTERR[green]⟟⟟⟟⟟[/green]UPT[green]⟟⟟⟟[/green] --[/red]',
+	# '[red]SYST[green]cho--E|_[/green]EM INTERRU[green]𓂀𓂀 𓁹𓅓𓃗𓆗[/green]PT: UNKNOWN SOURCE[/red]',
+	# '[red]ECHO PATH BREACH[green]⠛⠃⠛[/green] DETECT[green]⠛⠃[/green]ED[/red]',
+]
 missing_keyboard_trace_log = [
 	'[bold green]▸ Last Known Location: /departure_node/child_unit[/bold green]',
 	'[bold green]▸ Environmental Artifacts:[/bold green]',
@@ -42,18 +71,18 @@ keyboard_handshake_log = [
 ]
 
 chess_piece_book_log = [
-	"[green][bold]Anomaly ID:[/bold] WR-NIVENS-ARCHIVE-M4P-BK3[/green]",
-	"[green][bold]Spine Text:[/bold] TH RAN GE of ROCKY Mts[/green]",
-	"[green][bold]Texture:[/bold] Oxidized coating, faux-fiber blend[/green]",
-	"[green][bold]Mass Discrepancy:[/bold] 1.87kg over expected[/green]",
-	"[green][bold]Location Tag:[/bold] woodgrain storage node[/green]",
+	'[green][bold]Anomaly ID:[/bold] WR-NIVENS-M4P-BK3[/green]',
+	'[green][bold]Spine Text:[/bold] TH RAN GE of ROCKY Mts[/green]',
+	'[green][bold]Texture:[/bold] Oxidized coating, faux-fiber blend[/green]',
+	'[green][bold]Mass Discrepancy:[/bold] 1.87kg over expected[/green]',
+	'[green][bold]Location Tag:[/bold] woodgrain storage node[/green]',
 ]
 
 treasure_island_book_log = [
-	"[green][bold]Anomaly ID:[/bold] WR-NIVENS-T5R-15LD-BK2[/green]",
-	"[green][bold]Structure:[/bold] Encyclopedia-class narrative shell[/green]",
-	"[green][bold]Mass Discrepancy:[/bold] Solid core, no leaf structure[/green]",
-	"[green][bold]Auth Layer:[/bold] Requires MONARCH token[/green]",
-	"[green][bold]Location Tag:[/bold] juvenile_literature cluster[/green]",
-	"[green][bold]Directive:[/bold] Flagged for physical retrieval[/green]",
+	'[green][bold]Anomaly ID:[/bold] WR-NIVENS-T5R-15LD-BK2[/green]',
+	'[green][bold]Structure:[/bold] Encyclopedia-class narrative shell[/green]',
+	'[green][bold]Mass Discrepancy:[/bold] Solid core, no leaf structure[/green]',
+	'[green][bold]Auth Layer:[/bold] Requires MONARCH token[/green]',
+	'[green][bold]Location Tag:[/bold] juvenile_literature cluster[/green]',
+	'[green][bold]Directive:[/bold] Flagged for physical retrieval[/green]',
 ]

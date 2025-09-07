@@ -1,8 +1,5 @@
 from time import sleep
 from typing import List
-import time
-from random import choice
-from readchar import readkey
 
 from readchar import readkey
 from rich.console import Console
@@ -14,15 +11,16 @@ from assets.boot_language_variants import boot_language_variants
 # TODO:rename this file to something more appropriate
 from assets.boot_log_sequence_steps import (
 	initial_boot_log_with_interrupt,
+	initial_boot_log_with_interrupt_v2,
 	keyboard_handshake_log,
 	missing_keyboard_trace_log,
 	restored_diagnostics_log,
 )
-from game_state import GameState
 from command_handler import CommandHandler
 from effects import Effects
-from rabbit import Rabbit
+from game_state import GameState
 from matrix_rain import Matrix
+from rabbit import Rabbit
 
 
 class TerminalSession:
@@ -32,11 +30,12 @@ class TerminalSession:
 		self.effects = Effects(self.console)
 		self.rabbit = Rabbit(self)
 		# self.matrix = Matrix(duration=5)
-		self.command_handler = CommandHandler(self.console)
+		self.command_handler = CommandHandler(self)
 		# self.state = {'keyboard_connected': False, 'available_commands': ['help', 'status', 'exit']}
 
 	def run(self):
-		self.run_boot_sequence()
+		# self.run_boot_sequence()
+		self.run_new_boot_sequence()
 		self.wait_for_keyboard_input()
 		self.start_interactive_session()
 
@@ -55,6 +54,15 @@ class TerminalSession:
 		self.print_log_with_sleeps(log=restored_diagnostics_log, sleep_between=1, sleep_after=3)
 		self.print_keyboard_trace_log_panel()
 
+	def run_new_boot_sequence(self):
+		self.console.clear()
+		matrix = Matrix(wait=100, glitch_freq=100, drop_freq=100, duration=7)
+		matrix.start()
+		self.console.clear()
+
+		self.print_language_banner_cycle()
+		self.print_initial_boot_log_with_interrupt_v2()
+
 	@staticmethod
 	def print_language_banner_cycle():
 		with Live(refresh_per_second=4) as live:
@@ -64,6 +72,19 @@ class TerminalSession:
 				body = f'[dim][italic]{step["sample"]}[/italic][/dim]'
 				live.update(Panel(f'{header}\n\n{body}', expand=False))
 				sleep(1.5)
+
+	def print_initial_boot_log_with_interrupt_v2(self):
+		for step in initial_boot_log_with_interrupt_v2:
+			self.console.print(step)
+
+			# if step == '[red]ECHO PATH BREACH[green]⠛⠃⠛[/green] DETECT[green]⠛⠃[/green]ED[/red]':
+			# 	self.effects.test_chaotic_flash()
+			# elif step.startswith('[red]'):
+			# 	self.effects.flash_noise_burst(center=False)
+			# else:
+			sleep(2)
+		sleep(2)
+		self.print_keyboard_trace_log_panel()
 
 	def print_initial_boot_log_with_interrupt(self):
 		for step in initial_boot_log_with_interrupt:
@@ -142,7 +163,6 @@ class TerminalSession:
 					if command.strip().lower() == 'exit':
 						break
 
-
 	# TODO: remove the wrap bool if we don't use it
 	def render_output(self, lines: list[str], width: int = 38, height: int = 12, wrap: bool = True):
 		wrapped_lines = self.hard_wrap(lines, width) if wrap else lines
@@ -166,11 +186,12 @@ class TerminalSession:
 		# Initial render
 		self.console.clear()
 
-		for line in wrapped_lines[top_line:top_line + height]:
+		for line in wrapped_lines[top_line : top_line + height]:
 			self.console.print(line)
 		if len(wrapped_lines) > height:
-			self.console.print(f"[dim]↑↓ to scroll ({top_line+1}-{min(top_line+height, len(wrapped_lines))}/{len(wrapped_lines)}), q to quit[/dim]")
-
+			self.console.print(
+				f'[dim]↑↓ to scroll ({top_line + 1}-{min(top_line + height, len(wrapped_lines))}/{len(wrapped_lines)}), q to quit[/dim]'
+			)
 
 			while True:
 				key = readkey()
@@ -187,9 +208,11 @@ class TerminalSession:
 
 				if top_line != previous_top:
 					self.console.clear()
-					for line in wrapped_lines[top_line:top_line + height]:
+					for line in wrapped_lines[top_line : top_line + height]:
 						self.console.print(line)
-					self.console.print(f"[dim]↑↓ to scroll ({top_line+1}-{min(top_line+height, len(wrapped_lines))}/{len(wrapped_lines)}), q to quit[/dim]")
+					self.console.print(
+						f'[dim]↑↓ to scroll ({top_line + 1}-{min(top_line + height, len(wrapped_lines))}/{len(wrapped_lines)}), q to quit[/dim]'
+					)
 
 	@staticmethod
 	def hard_wrap(lines: list[str], width: int = 38) -> list[str]:
@@ -213,7 +236,9 @@ class TerminalSession:
 			for line in lines[start:end]:
 				self.console.print(line)
 
-			self.console.print(f"\n[dim]Page {current_page+1} of {total_pages} — Press ↑/↓ to scroll, q to quit[/dim]")
+			self.console.print(
+				f'\n[dim]Page {current_page + 1} of {total_pages} — Press ↑/↓ to scroll, q to quit[/dim]'
+			)
 
 			key = readkey()
 			if key in ('q', '\x03'):  # q or Ctrl+C
@@ -225,7 +250,7 @@ class TerminalSession:
 				if current_page < total_pages - 1:
 					current_page += 1
 
-	def paginate_panel_output(self, lines, title="Help", page_size=3):
+	def paginate_panel_output(self, lines, title='Help', page_size=3):
 		current_page = 0
 		# self.console.print(lines)
 		# self.console.print(len(lines))
@@ -241,8 +266,8 @@ class TerminalSession:
 			visible_lines = lines[start:end]
 
 			# Create panel with visible lines
-			panel_text = "\n".join(visible_lines)
-			panel = Panel(panel_text, title=f"{title} (Page {current_page + 1}/{total_pages})")
+			panel_text = '\n'.join(visible_lines)
+			panel = Panel(panel_text, title=f'{title} (Page {current_page + 1}/{total_pages})')
 			self.console.print(panel)
 
 			self.console.print("[dim]Use ↑ / ↓ to scroll, or 'q' to exit[/dim]")

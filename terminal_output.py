@@ -1,12 +1,15 @@
-from typing import Optional, Union, List
+from typing import List, Optional
+
 from rich.console import RenderableType
+
+
 class TerminalOutput:
 	def __init__(
-			self,
-			lines: Optional[List[str]] = None,
-			renderable: Optional[RenderableType] = None,
-			scrollable: bool = True,
-			wrap: bool = True,
+		self,
+		lines: Optional[List[str]] = None,
+		renderable: Optional[RenderableType] = None,
+		scrollable: bool = True,
+		wrap: bool = True,
 	):
 		self.lines = lines
 		self.renderable = renderable

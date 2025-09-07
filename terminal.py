@@ -1,10 +1,18 @@
-from terminal_session import TerminalSession
 import argparse
+
+from terminal_session import TerminalSession
+
 
 def parse_args():
 	parser = argparse.ArgumentParser(description='Terminal session')
-	parser.add_argument('--start-at', type=str, default='boot', help='Start the session at a specific point (e.g., boot, keyboard_ready)')
+	parser.add_argument(
+		'--start-at',
+		type=str,
+		default='boot',
+		help='Start the session at a specific point (e.g., boot, keyboard_ready)',
+	)
 	return parser.parse_args()
+
 
 def main():
 	args = parse_args()
