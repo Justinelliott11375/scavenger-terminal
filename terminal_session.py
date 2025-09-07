@@ -82,8 +82,8 @@ class TerminalSession:
 			# elif step.startswith('[red]'):
 			# 	self.effects.flash_noise_burst(center=False)
 			# else:
-			sleep(2)
-		sleep(2)
+			sleep(3)
+		sleep(3)
 		self.print_keyboard_trace_log_panel()
 
 	def print_initial_boot_log_with_interrupt(self):
@@ -127,6 +127,10 @@ class TerminalSession:
 
 	def wait_for_keyboard_input(self):
 		self.console.print('[cyan]:: Awaiting input device handshake...[/cyan]')
+		sleep(5)
+		self.rabbit.say(text='...hello?', glitch_chance=0, sleep_duration=2, after_action='backspace')
+		self.rabbit.say(text='Is anyone there?', glitch_chance=0, sleep_duration=2, after_action='backspace')
+
 
 		while True:
 			key = readkey()
