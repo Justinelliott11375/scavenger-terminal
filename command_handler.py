@@ -93,11 +93,7 @@ class CommandHandler:
 
 	def handle_quest(self):
 		# TODO: look into a cleaner way to word states and transitions, this feels weird
-		log = (
-			treasure_island_book_log
-			if self.terminal_session.state.is_initial()
-			else chess_piece_book_log
-		)
+		log = treasure_island_book_log if self.terminal_session.state.is_initial() else chess_piece_book_log
 
 		return TerminalOutput(
 			renderable=Panel.fit(

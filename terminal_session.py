@@ -21,6 +21,7 @@ from effects import Effects
 from game_state import GameState
 from matrix_rain import Matrix
 from rabbit import Rabbit
+from usb_watcher import gate_run
 
 
 class TerminalSession:
@@ -59,6 +60,7 @@ class TerminalSession:
 		matrix = Matrix(wait=100, glitch_freq=100, drop_freq=100, duration=7)
 		matrix.start()
 		self.console.clear()
+		gate_run(timeout=30)
 
 		self.print_language_banner_cycle()
 		self.print_initial_boot_log_with_interrupt_v2()
@@ -130,7 +132,6 @@ class TerminalSession:
 		sleep(5)
 		self.rabbit.say(text='...hello?', glitch_chance=0, sleep_duration=2, after_action='backspace')
 		self.rabbit.say(text='Is anyone there?', glitch_chance=0, sleep_duration=2, after_action='backspace')
-
 
 		while True:
 			key = readkey()

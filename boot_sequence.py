@@ -10,7 +10,6 @@ from assets.boot_log_sequence_steps import (
 	restored_diagnostics_log,
 )
 from effects import Effects
-from rabbit import Rabbit
 
 
 # TODO: I don't think this file is being used anymore
