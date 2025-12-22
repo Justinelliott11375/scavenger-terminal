@@ -141,7 +141,6 @@ class TerminalSession:
 			key = readkey()
 			self.console.print(f'[blue]:: Received input: "{key}"[/blue]')
 			if key is not None:
-				self.state.connect_keyboard()
 				sleep(1)
 				break
 			sleep(0.1)
@@ -164,7 +163,6 @@ class TerminalSession:
 				result = self.command_handler.handle_command(command)
 
 				if isinstance(result, TerminalSequence):
-					print(f'Running sequence: {result.name}')
 					ok = self.runner.run(result)
 					if not ok:
 						self.console.print('[grey50][SYS] Sequence aborted or timed out.[/grey50]')

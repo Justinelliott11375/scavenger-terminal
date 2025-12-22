@@ -104,9 +104,10 @@ class Effects:
 		sleep(3)
 		self.console.clear()
 
-	def glitch_type_out(self, text: str, delay: float = 0.075, glitch_chance=0.05, style='bold magenta'):
+	def glitch_type_out(self, text: str, delay: float = 0.075, glitch_chance: float = 0, style='bold magenta'):
 		"""Type out text with occasional glitched characters and optional styling."""
 		# for char in f'{self.RABBIT_MESSAGE_PREFIX}{text}':
+
 		for char in text:
 			# Randomly replace character
 			if random.random() < glitch_chance and char not in [' ', '.', ':', 'Д']:

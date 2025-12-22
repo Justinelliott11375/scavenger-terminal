@@ -20,12 +20,12 @@ class GameState:
 		)
 		self.machine.add_transition(trigger='connect_keyboard', source='initial', dest='mirror_clue_directive_initial')
 		self.machine.add_transition(
-			trigger='enter_mirror_clue_directive',
-			source='mirror_clue_directive_initial',
+			trigger='run_mirror_clue_directive_initial',
+			source='initial',
 			dest='mirror_clue_directive_initial',
 		)
 		self.machine.add_transition(
-			trigger='ran_mirror_clue_directive_initial',
+			trigger='run_mirror_clue_directive_repeat',
 			source='mirror_clue_directive_initial',
 			dest='mirror_clue_directive_repeat',
 		)

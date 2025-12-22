@@ -2,7 +2,8 @@
 import time
 from typing import Protocol
 
-from sequence_types import Call, Effect, OverwriteLastLine, PrintLine, PrintLines, Render, Sleep
+from rabbit import Rabbit
+from sequence_types import Call, Effect, OverwriteLastLine, PrintLine, PrintLines, RabbitSay, Render, Sleep
 from terminal_sequence import TerminalSequence
 
 
@@ -27,6 +28,7 @@ class SequenceRunner:
 		self.clock = clock
 		self._cancelled = False
 		self._on_cancel = on_cancel
+		self.rabbit = Rabbit(self)
 
 	def cancel(self):
 		self._cancelled = True
@@ -54,6 +56,8 @@ class SequenceRunner:
 				# case WaitForSignal(key, timeout):
 				# if not self.events.wait(key, timeout):
 				# return False
+				case RabbitSay(text, delay, glitch_chance, sleep_duration, after_action):
+					self.rabbit.say(text, delay, glitch_chance, sleep_duration, after_action)
 				case Call(func):
 					func()
 				case _:

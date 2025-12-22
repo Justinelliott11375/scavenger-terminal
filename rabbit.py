@@ -14,9 +14,9 @@ class Rabbit:
 		self,
 		text: str,
 		delay: float = 0.03,
-		glitch_chance: float = 0.05,
+		glitch_chance: float = 0.0,
 		sleep_duration: float = 3.0,
-		after_action: Literal['clear', 'backspace'] = 'clear',
+		after_action: Literal['clear', 'backspace', 'stay'] = 'clear',
 	) -> None:
 		self.effects.glitch_type_out(self.prefix + text, delay=delay, glitch_chance=glitch_chance)
 		sleep(sleep_duration)
@@ -28,6 +28,8 @@ class Rabbit:
 				sys.stdout.write('\b \b')
 				sys.stdout.flush()
 				sleep(0.015)
+		elif after_action == 'stay':
+			self.console.print()  # just print a newline
 
 	def nudge(self) -> None:
 		message = "Try typing 'help'. It won't bite."

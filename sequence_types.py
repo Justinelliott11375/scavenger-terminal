@@ -1,6 +1,6 @@
 # sequence_types.py
 from dataclasses import dataclass
-from typing import Any, Callable, List, Optional
+from typing import Any, Callable, List, Literal, Optional
 
 
 @dataclass
@@ -56,3 +56,12 @@ class Call(Step):
 class TerminalSequence:
 	steps: List[Step]
 	name: str = 'anonymous'
+
+
+@dataclass
+class RabbitSay:
+	text: str
+	delay: float = 0.03
+	glitch_chance: float = 0
+	sleep_duration: float = 3.0
+	after_action: Literal['clear', 'backspace', 'stay'] = 'clear'
