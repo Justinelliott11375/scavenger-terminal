@@ -18,10 +18,12 @@ from assets.boot_log_sequence_steps import (
 )
 from command_handler import CommandHandler
 from effects import Effects
+from event_bus import EventBus
 from game_state import GameState
 from matrix_rain import Matrix
 from rabbit import Rabbit
-from usb_watcher import gate_run
+from sequence_runner import SequenceRunner
+from sequence_types import TerminalSequence
 
 
 class TerminalSession:
@@ -33,6 +35,8 @@ class TerminalSession:
 		# self.matrix = Matrix(duration=5)
 		self.command_handler = CommandHandler(self)
 		# self.state = {'keyboard_connected': False, 'available_commands': ['help', 'status', 'exit']}
+		self.events = EventBus()
+		self.runner = SequenceRunner(self.console, self.effects)
 
 	def run(self):
 		# self.run_boot_sequence()
@@ -60,7 +64,7 @@ class TerminalSession:
 		matrix = Matrix(wait=100, glitch_freq=100, drop_freq=100, duration=7)
 		matrix.start()
 		self.console.clear()
-		gate_run(timeout=30)
+		# gate_run(timeout=30)
 
 		self.print_language_banner_cycle()
 		self.print_initial_boot_log_with_interrupt_v2()
@@ -144,6 +148,7 @@ class TerminalSession:
 
 		self.print_log_with_sleeps(keyboard_handshake_log, sleep_between=1, sleep_after=1.5)
 
+	# TODO: lot of nesting here, lets clean up a bit
 	def start_interactive_session(self):
 		header = '[bold green]Interactive Secure Shell Ready[/bold green]'
 		body = '[dim]Type "help" for available commands.[/dim]'
@@ -158,6 +163,12 @@ class TerminalSession:
 				self.console.print(f'[green]Command entered: [bold]{command}[/bold][/green]')
 				result = self.command_handler.handle_command(command)
 
+				if isinstance(result, TerminalSequence):
+					print(f'Running sequence: {result.name}')
+					ok = self.runner.run(result)
+					if not ok:
+						self.console.print('[grey50][SYS] Sequence aborted or timed out.[/grey50]')
+					continue
 				if result.renderable:
 					self.console.print(result.renderable)
 				elif result.scrollable:
@@ -175,10 +186,11 @@ class TerminalSession:
 		sleep(3)
 
 		if len(wrapped_lines) > height:
-			self.console.print(f'[dim]Output is too long, scrolling enabled. Use ↑/↓ to scroll, q to quit.[/dim]')
+			self.console.print('[dim]Output is too long, scrolling enabled. Use ↑/↓ to scroll, q to quit.[/dim]')
 			self.scroll_lines(wrapped_lines, height)
 		else:
-			self.console.print(f'[dim]Output is short enough, displaying all lines.[/dim]')
+			# Not sure if we need to specifically note this when we don't have to paginate
+			self.console.print('[dim]Output is short enough, displaying all lines.[/dim]')
 			for line in lines:
 				self.console.print(line)
 
@@ -194,9 +206,12 @@ class TerminalSession:
 		for line in wrapped_lines[top_line : top_line + height]:
 			self.console.print(line)
 		if len(wrapped_lines) > height:
-			self.console.print(
-				f'[dim]↑↓ to scroll ({top_line + 1}-{min(top_line + height, len(wrapped_lines))}/{len(wrapped_lines)}), q to quit[/dim]'
-			)
+			scroll_start = top_line + 1
+			scroll_end = min(top_line + height, len(wrapped_lines))
+			total_lines = len(wrapped_lines)
+
+			scroll_info = f'[dim]↑↓ to scroll ({scroll_start}-{scroll_end}/{total_lines}), q to quit[/dim]'
+			self.console.print(scroll_info)
 
 			while True:
 				key = readkey()
@@ -211,12 +226,16 @@ class TerminalSession:
 					if top_line < max_top:
 						top_line += 1
 
+				# This seems to be repeating whats above to some extent, maybe refactor to combine
 				if top_line != previous_top:
 					self.console.clear()
 					for line in wrapped_lines[top_line : top_line + height]:
 						self.console.print(line)
+					scroll_start = top_line + 1
+					scroll_end = min(top_line + height, len(wrapped_lines))
+					total_lines = len(wrapped_lines)
 					self.console.print(
-						f'[dim]↑↓ to scroll ({top_line + 1}-{min(top_line + height, len(wrapped_lines))}/{len(wrapped_lines)}), q to quit[/dim]'
+						f'[dim]↑↓ to scroll ({scroll_start}-{scroll_end}/{total_lines}), q to quit[/dim]'
 					)
 
 	@staticmethod

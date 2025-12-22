@@ -39,13 +39,13 @@ class Matrix(list):
 	def __str__(self):
 		text = ''
 
-		for c, s, l in sum(self[MAX_LEN:], []):
-			if s == STATE_NONE:
+		for char, state, length in sum(self[MAX_LEN:], []):
+			if state == STATE_NONE:
 				text += BLANK_CHAR
-			elif s == STATE_FRONT:
-				text += f'{FRONT_CLR}{c}'
+			elif state == STATE_FRONT:
+				text += f'{FRONT_CLR}{char}'
 			else:
-				text += f'{BODY_CLRS[l]}{c}'
+				text += f'{BODY_CLRS[length]}{char}'
 
 		return text
 
@@ -104,16 +104,15 @@ class Matrix(list):
 
 		return dropped
 
-	def add_drop(self, row: int, col: int, length: int):
-		for i in reversed(range(length)):
-			r = row + (length - i)
+	def add_drop(self, start_row: int, col: int, drop_length: int):
+		for offset in reversed(range(drop_length)):
+			current_row = start_row + (drop_length - offset)
 
-			if i == 0:
-				self.update_cell(r, col, state=STATE_FRONT, length=length)
+			if offset == 0:
+				self.update_cell(current_row, col, state=STATE_FRONT, length=drop_length)
 			else:
-				l = math.ceil((TOTAL_CLRS - 1) * i / length)
-
-				self.update_cell(r, col, state=STATE_TAIL, length=l)
+				color_index = math.ceil((TOTAL_CLRS - 1) * offset / drop_length)
+				self.update_cell(current_row, col, state=STATE_TAIL, length=color_index)
 
 	def screen_check(self):
 		if (p := self.get_prompt_size()) != (self.rows, self.cols):

@@ -5,6 +5,7 @@ from rich.progress import BarColumn, Progress
 from rich.table import Table
 
 from assets.boot_log_sequence_steps import chess_piece_book_log, treasure_island_book_log
+from sequences.directive import directive_sequence
 from terminal_output import TerminalOutput
 
 
@@ -35,22 +36,27 @@ class CommandHandler:
 				lines=['[red]Session terminated.[/red]'],
 				scrollable=False,
 			)
-		elif command == 'quest':
-			return self.handle_quest()
+		elif command == 'directive':
+			# return self.handle_directive()
+			return directive_sequence(self.terminal_session)
 		# Figure out a better name for this
 		elif command == 'audio clue deciphered':
 			return
 		else:
-			return ["[yellow]Unknown command.[/yellow] Type 'help' for a list of valid commands."]
+			return TerminalOutput(
+				lines=["[yellow]Unknown command.[/yellow] Type 'help' for a list of valid commands."],
+				scrollable=False,
+			)
 
 	def handle_help(self):
 		table = Table(show_header=True, header_style='bold green')
 		table.add_column('Command', style='cyan', no_wrap=True)
 		table.add_column('Description', style='dim')
 
+		# TODO: will need a refactor here to make the list of commands dynamic
 		table.add_row('help', 'Display the list of available commands')
 		table.add_row('scan', 'Show system status')
-		table.add_row('quest', 'Summarize current objective')
+		table.add_row('directive', 'Summarize current objective')
 		table.add_row('clear', 'Clear the terminal screen')
 		# table.add_row('exit', 'Terminate session')
 
@@ -91,7 +97,7 @@ class CommandHandler:
 			)
 		)
 
-	def handle_quest(self):
+	def handle_directive(self):
 		# TODO: look into a cleaner way to word states and transitions, this feels weird
 		log = treasure_island_book_log if self.terminal_session.state.is_initial() else chess_piece_book_log
 

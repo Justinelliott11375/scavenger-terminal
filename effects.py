@@ -4,9 +4,53 @@ import sys
 import time
 from time import sleep
 
-from rich.console import Console
+from rich.console import Console, RenderableType
+from rich.live import Live
+from rich.text import Text
 
 from assets.noise_lines import noise_lines
+
+
+class LiveBuffer:
+	"""Keeps a small tail of recent lines renderable as a single Live block."""
+
+	def __init__(self, console: Console, capacity: int = 12):
+		self.console = console
+		self.capacity = capacity
+		self.lines: list[Text] = []
+		self.live: Live | None = None
+
+	def push(self, line: RenderableType):
+		# Convert to Text to allow mutation later
+		t = Text.from_markup(line) if isinstance(line, str) else Text(str(line))
+		self.lines.append(t)
+		if len(self.lines) > self.capacity:
+			self.lines.pop(0)
+		self._ensure_live()
+		self.live.update(Text('\n').join(self.lines), refresh=True)
+
+	def overwrite_last(self, new_markup: str):
+		if not self.lines:
+			return
+		self.lines[-1] = Text.from_markup(new_markup)
+		self._ensure_live()
+		self.live.update(Text('\n').join(self.lines), refresh=True)
+
+	def overwrite_at(self, idx_from_end: int, new_markup: str):
+		i = len(self.lines) - 1 - idx_from_end
+		if 0 <= i < len(self.lines):
+			self.lines[i] = Text.from_markup(new_markup)
+			self.live.update(Text('\n').join(self.lines), refresh=True)
+
+	def _ensure_live(self):
+		if self.live is None:
+			self.live = Live(Text('\n').join(self.lines), console=self.console, refresh_per_second=30)
+			self.live.start()
+
+	def stop(self):
+		if self.live:
+			self.live.stop()
+			self.live = None
 
 
 class Effects:
