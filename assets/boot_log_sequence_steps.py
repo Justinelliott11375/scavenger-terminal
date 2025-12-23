@@ -41,7 +41,7 @@ initial_boot_log_with_interrupt_v2 = [
 	'[cyan]:: Launching Interactive Module...[/cyan]',
 	'[red]ERROR — input device not detected[/red]',
 	'[red]>> Please connect a certified AC Technologies input interface to continue.[/red]',
-	'[cyan]:: Retrieving input device trace log for retrieval...[/cyan]',
+	'[cyan]:: Fetching input device trace log for retrieval...[/cyan]',
 	# '[cyan]Initializing system memory...[/cyan]',
 	# '[cyan]Loading kernel modules...[/cyan]',
 	# '[cyan]Mounting /core/ai...[/cyan]',

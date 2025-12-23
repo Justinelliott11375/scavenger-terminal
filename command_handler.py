@@ -54,8 +54,8 @@ class CommandHandler:
 		table.add_column('Description', style='dim')
 
 		# TODO: will need a refactor here to make the list of commands dynamic
-		table.add_row('help', 'Display the list of available commands')
-		table.add_row('scan', 'Show system status')
+		table.add_row('help', 'List all available commands')
+		table.add_row('scan', 'Scan for connected hardware')
 		table.add_row('directive', 'Summarize current objective')
 		table.add_row('clear', 'Clear the terminal screen')
 		# table.add_row('exit', 'Terminate session')
