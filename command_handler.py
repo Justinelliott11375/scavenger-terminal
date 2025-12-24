@@ -4,7 +4,7 @@ from rich.panel import Panel
 from rich.progress import BarColumn, Progress
 from rich.table import Table
 
-from audio_utils import play_audio
+from audio_utils import play_audio, stop_audio
 from assets.boot_log_sequence_steps import chess_piece_book_log, treasure_island_book_log
 from sequence_types import Call, PrintLine, TerminalSequence, Sleep
 from sequences.directive import directive_sequence
@@ -47,6 +47,8 @@ class CommandHandler:
 			return self.handle_audio()
 		elif command == 'play':
 			return self.handle_play_audio()
+		elif command == 'stop':
+			return self.handle_stop_audio()
 		else:
 			return TerminalOutput(
 				lines=["[yellow]Unknown command.[/yellow] Type 'help' for a list of valid commands."],
@@ -77,6 +79,7 @@ class CommandHandler:
 		table.add_column('Description', style='dim')
 
 		table.add_row('play', 'play audio clue fragments')
+		table.add_row('stop', 'stop audio playback')
 		table.add_row('reverse', 'play audio fragments in reverse')
 		table.add_row('boost', 'Signal boost for faint audio fragments')
 		table.add_row('clean', 'Noise reduction for audio fragments')
@@ -165,9 +168,20 @@ class CommandHandler:
 	def handle_play_audio(self) -> TerminalSequence:
 		return TerminalSequence(name='Audio - Play Raw Fragment',
 			steps=[
-				PrintLine("[SYS] Playing audio fragment ALICE-07...", "cyan"),
+				PrintLine("[SYS] Playing audio fragment, type 'stop' to interrupt.", "cyan"),
             	Sleep(0.5),
             	Call(lambda: play_audio("morpheus_audio_clean.wav")),
             	Sleep(0.2),
             	PrintLine("[SYS] Playback complete.", "cyan"),
+			])
+
+
+	def handle_stop_audio(self) -> TerminalSequence:
+		return TerminalSequence(name='Audio - Stop Playback',
+			steps=[
+				PrintLine("[SYS] Stopping audio playback...", "cyan"),
+				Sleep(0.5),
+				Call(lambda: stop_audio()),
+				Sleep(0.2),
+				PrintLine("[SYS] Audio playback stopped.", "cyan"),
 			])
