@@ -65,7 +65,7 @@ class CommandHandler:
 		return TerminalOutput(renderable=table)
 
 	def handle_scan(self):
-		detect_generic_usb()
+		print(detect_generic_usb())
 		with Progress(
 			'[progress.description]{task.description}',
 			BarColumn(bar_width=None),
