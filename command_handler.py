@@ -9,7 +9,7 @@ from assets.boot_log_sequence_steps import chess_piece_book_log, treasure_island
 from sequence_types import Call, PrintLine, TerminalSequence, Sleep
 from sequences.directive import directive_sequence
 from terminal_output import TerminalOutput
-from usb_watcher import detect_generic_usb
+from usb_watcher import detect_generic_usb, detect_black_king_usb
 
 
 class CommandHandler:
@@ -101,6 +101,7 @@ class CommandHandler:
 				progress.update(task, advance=2)
 
 		usb_white_king_detected = detect_generic_usb()
+		usb_black_king_detected = detect_black_king_usb()
 
 		if usb_white_king_detected:
 			self.terminal_session.state.insert_white_king_usb()
@@ -126,6 +127,12 @@ class CommandHandler:
 				Sleep(1),
 				PrintLine('[SYS] Monarch USB token can be safely removed', 'green'),
 
+			])
+
+		if usb_black_king_detected:
+			return TerminalSequence(name='Scan Results', steps=[
+				Sleep(1),
+				PrintLine('WE GOT HIM', 'green'),
 			])
 
 		return TerminalSequence(name='Scan Results', steps=[
