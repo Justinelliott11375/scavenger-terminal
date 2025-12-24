@@ -78,11 +78,11 @@ class CommandHandler:
 		table.add_column('Command', style='cyan', no_wrap=True)
 		table.add_column('Description', style='dim')
 
-		table.add_row('play', 'play audio clue fragments')
-		table.add_row('stop', 'stop audio playback')
-		table.add_row('reverse', 'play audio fragments in reverse')
-		table.add_row('boost', 'Signal boost for faint audio fragments')
-		table.add_row('clean', 'Noise reduction for audio fragments')
+		table.add_row('play', 'Play audio clue fragments')
+		table.add_row('stop', 'Stop audio playback')
+		table.add_row('reverse', 'Reverse audio playback direction')
+		table.add_row('denoise', 'Remove background noise from audio fragments')
+		table.add_row('clean', 'Remove excessive artifacts from audio fragments')
 
 		return TerminalOutput(renderable=table)
 
