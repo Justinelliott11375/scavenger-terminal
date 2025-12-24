@@ -75,6 +75,8 @@ def matches_black_king_fingerprint(device) -> bool:
 		return False
 
 	label = device.get('ID_FS_LABEL')
+	print(f'found label: {label}')
+	time.sleep(2)
 
 	return label == TARGET_LABEL
 
@@ -134,6 +136,8 @@ def detect_generic_usb(timeout: float = 2.0, poll_interval: float = 0.2) -> bool
 	return False
 
 def detect_black_king_usb(timeout: float = 2.0, poll_interval: float = 0.2) -> bool:
+	print('checking for black king')
+	time.sleep(2)
 	if not sys.platform.startswith('linux'):
 		# On non-Linux platforms, just fail closed for now
 		# return False
@@ -144,12 +148,13 @@ def detect_black_king_usb(timeout: float = 2.0, poll_interval: float = 0.2) -> b
 
 	# We don't need event watching for 'scan' – a repeated sweep is simpler and safer.
 	while time.time() < end:
+		exists = False
 		for dev in ctx.list_devices(subsystem='block'):
 			if matches_black_king_fingerprint(dev):
-				return True
-		return False
+				exists = True
+				break
 
-		if _sweep_existing(ctx):
+		if exists:
 			return True
 		time.sleep(poll_interval)
 
