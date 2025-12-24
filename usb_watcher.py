@@ -45,7 +45,8 @@ def _matches_fingerprint(device) -> bool:
 		return False
 	if device.device_type not in ('disk', 'partition'):
 		return False
-
+	print(f'vendor id: {device.get("ID_VENDOR_ID")}')
+	print(f'model id: {device.get("ID_MODEL_ID")}')
 	# Vendor/Model check (most important for this generic device)
 	if device.get('ID_VENDOR_ID') != VENDOR_ID:
 		return False
