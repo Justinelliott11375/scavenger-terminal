@@ -11,6 +11,7 @@ class GameState:
 		'audio_unreversed',
 		'audio_denoised',
 		'audio_cleaned',
+		'final',
 	]
 
 	def __init__(self):
