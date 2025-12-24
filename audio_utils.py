@@ -26,7 +26,6 @@ def play_audio(state: str) -> None:
 	path = AUDIO_DIR / filename
 
 	if not path.exists():
-		print(f"[AUDIO] File not found: {path}")
 		return
 
 	if _current_proc is not None and _current_proc.poll() is None:
