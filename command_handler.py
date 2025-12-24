@@ -7,7 +7,7 @@ from rich.table import Table
 from assets.boot_log_sequence_steps import chess_piece_book_log, treasure_island_book_log
 from sequences.directive import directive_sequence
 from terminal_output import TerminalOutput
-from usb_watcher import gate_run
+from usb_watcher import detect_generic_usb
 
 
 class CommandHandler:
@@ -65,7 +65,7 @@ class CommandHandler:
 		return TerminalOutput(renderable=table)
 
 	def handle_scan(self):
-		gate_run(timeout=5)
+		detect_generic_usb()
 		with Progress(
 			'[progress.description]{task.description}',
 			BarColumn(bar_width=None),

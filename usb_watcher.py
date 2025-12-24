@@ -95,6 +95,27 @@ def wait_for_generic_usb(timeout: float | None = None) -> bool:
 		if timeout is not None and (time.time() - start) >= timeout:
 			return False
 
+# this is for the white king chess piece, rename when the other logic for the other king is added
+def detect_generic_usb(timeout: float = 2.0, poll_interval: float = 0.2) -> bool:
+	"""
+	Check for the specific USB over a short window (for 'scan'-style checks).
+	Returns True if the stick is present at any point during the timeout, False otherwise.
+	Does NOT block indefinitely.
+	"""
+	if not sys.platform.startswith('linux'):
+		# On non-Linux platforms, just fail closed for now
+		return False
+
+	ctx = pyudev.Context()
+	end = time.time() + timeout
+
+	# We don't need event watching for 'scan' – a repeated sweep is simpler and safer.
+	while time.time() < end:
+		if _sweep_existing(ctx):
+			return True
+		time.sleep(poll_interval)
+
+	return False
 
 def gate_run(timeout: float | None = None) -> bool:
 	print('[USB] Waiting for the specific generic USB…', flush=True)
