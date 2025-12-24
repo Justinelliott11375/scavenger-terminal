@@ -29,3 +29,21 @@ class GameState:
 			source='mirror_clue_directive',
 			dest='audio_clue'
 		)
+
+		self.machine.add_transition(
+			trigger='edit_audio_unreverse',
+			source='audio_clue',
+			dest='audio_unreversed'
+		)
+
+		self.machine.add_transition(
+			trigger='edit_audio_denoise',
+			source='audio_unreversed',
+			dest='audio_denoised'
+		)
+
+		self.machine.add_transition(
+			trigger='edit_audio_clean',
+			source='audio_denoised',
+			dest='audio_cleaned'
+		)

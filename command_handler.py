@@ -45,8 +45,8 @@ class CommandHandler:
 		# Figure out a better name for this
 		elif command == 'audio':
 			return self.handle_audio()
-		elif command == 'play':
-			return self.handle_play_audio()
+		elif command in ('play', 'reverse', 'denoise', 'clean'):
+			return self.handle_audio_command(command)
 		elif command == 'stop':
 			return self.handle_stop_audio()
 		else:
@@ -165,15 +165,52 @@ class CommandHandler:
 			)
 		)
 
-	def handle_play_audio(self) -> TerminalSequence:
-		return TerminalSequence(name='Audio - Play Raw Fragment',
-			steps=[
-				PrintLine("[SYS] Playing audio fragment, type 'stop' to interrupt.", "cyan"),
-            	Sleep(0.5),
-            	Call(lambda: play_audio("morpheus_audio_clean.wav")),
-            	Sleep(0.2),
-            	PrintLine("[SYS] Playback complete.", "cyan"),
-			])
+	def handle_audio_command(self, command: str) -> TerminalSequence:
+		if command == 'play':
+			return TerminalSequence(name='Audio - Play Raw Fragment',
+				steps=[
+					PrintLine("[SYS] Playing audio fragment, type 'stop' to interrupt.", "cyan"),
+					Sleep(2.0),
+					PrintLine("[SYS] Type 'stop' at any time to halt playback.", "cyan"),
+					Sleep(0.5),
+					Call(lambda: play_audio(self.terminal_session.state)),
+					Sleep(0.2),
+				])
+
+		if self.terminal_session.state.is_audio_clue():
+			if command == 'reverse':
+				self.terminal_session.state.edit_audio_unreverse()
+				return TerminalSequence(name='Audio - Reverse',
+					steps=[
+						PrintLine("[SYS] Reversing audio fragment...", "cyan"),
+						Sleep(3.0),
+						PrintLine("[SYS] Audio reversal complete.", "cyan"),
+					])
+			elif command == 'denoise':
+				return TerminalSequence(name='Audio - Denoise',
+					steps=[
+						PrintLine("[SYS] Cleanup skipped.", "cyan"),
+						Sleep(1.0),
+						PrintLine("The whole clip is still running backward.", "cyan"),
+						Sleep(1.0),
+						PrintLine("I can’t scrub noise off a sentence I can’t read.", "cyan"),
+						Sleep(1.0),
+						PrintLine("Hint: try \"reverse\" before you try to clean it.", "cyan"),
+						Sleep(0.5),
+					])
+			elif command == 'clean':
+				return TerminalSequence(name='Audio - Clean',
+					steps=[
+						PrintLine("[SYS] Cleanup pass refused.", "cyan"),
+						Sleep(1.0),
+						PrintLine("Reason: speech envelope still running backward.", "cyan"),
+						Sleep(1.0),
+						PrintLine("Filters can’t lock onto words while the timeline is inverted.", "cyan"),
+						Sleep(1.0),
+						PrintLine("Hint: correct playback direction first with \"reverse\".", "cyan"),
+						Sleep(0.5),
+					])
+
 
 
 	def handle_stop_audio(self) -> TerminalSequence:

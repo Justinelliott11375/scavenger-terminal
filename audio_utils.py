@@ -6,15 +6,20 @@ AUDIO_DIR = Path(__file__).parent / "assets" / "audio"
 APLAY_DEVICE = 'plughw:1,0'
 
 _current_proc: subprocess.Popen | None = None
-
-def play_audio(filename: str) -> None:
+audio_files_by_state = {
+	'audio_clue': 'morpheus_audio_reverse.wav',
+	'audio_unreversed': 'morpheus_audio_static.wav',
+	'audio_denoised': 'morpheus_audio_delay.wav',
+	'audio_cleaned': 'morpheus_audio_clean.wav',
+}
+def play_audio(state: str) -> None:
 	"""
 	Play a WAV file using 'aplay'.
 	Blocks until playback finishes.
 	"""
-
 	global _current_proc
 
+	filename = audio_files_by_state.get(state)
 	path = AUDIO_DIR / filename
 
 	if not path.exists():
@@ -61,7 +66,6 @@ def stop_audio() -> None:
 		_current_proc = None
 		return False
 
-	print("[AUDIO] Stopping audio playback.")
 	_current_proc.terminate()
 
 	try:
