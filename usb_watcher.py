@@ -104,7 +104,8 @@ def detect_generic_usb(timeout: float = 2.0, poll_interval: float = 0.2) -> bool
 	"""
 	if not sys.platform.startswith('linux'):
 		# On non-Linux platforms, just fail closed for now
-		return False
+		# return False
+		return True
 
 	ctx = pyudev.Context()
 	end = time.time() + timeout

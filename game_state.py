@@ -6,26 +6,26 @@ class GameState:
 		'initial',
 		'treasure_island_book',
 		'chess_piece_book',
-		'mirror_clue_directive_initial',
-		'mirror_clue_directive_repeat',
+		'mirror_clue_directive',
+		'audio_clue',
 	]
 
 	def __init__(self):
 		self.machine = Machine(model=self, states=GameState.states, initial='initial')
 
-		# self.machine.add_transition(trigger='connect_keyboard', source='initial', dest='keyboard_connected')
-		self.machine.add_transition(trigger='discover_treasure_island_book', source='initial', dest='chess_piece_book')
+		# self.machine.add_transition(trigger='connect_keyboard', source='initial', dest='mirror_clue_directive_initial')
 		self.machine.add_transition(
-			trigger='discover_chess_piece_book', source='treasure_island_book', dest='chess_piece_book'
-		)
-		self.machine.add_transition(trigger='connect_keyboard', source='initial', dest='mirror_clue_directive_initial')
-		self.machine.add_transition(
-			trigger='run_mirror_clue_directive_initial',
+			trigger='run_mirror_clue_directive',
 			source='initial',
-			dest='mirror_clue_directive_initial',
+			dest='mirror_clue_directive',
 		)
+		# self.machine.add_transition(
+		# 	trigger='run_mirror_clue_directive_repeat',
+		# 	source='mirror_clue_directive_initial',
+		# 	dest='mirror_clue_directive_repeat',
+		# )
 		self.machine.add_transition(
-			trigger='run_mirror_clue_directive_repeat',
-			source='mirror_clue_directive_initial',
-			dest='mirror_clue_directive_repeat',
+			trigger='insert_white_king_usb',
+			source='mirror_clue_directive',
+			dest='audio_clue'
 		)

@@ -25,7 +25,6 @@ initial_boot_log_with_interrupt = [
 	'[red]ECHO PATH BREACH[green]⠛⠃⠛[/green] DETECT[green]⠛⠃[/green]ED[/red]',
 ]
 
-
 initial_boot_log_with_interrupt_v2 = [
 	'[cyan]User language detected: [/cyan][green]ENGLISH[/green]',
 	'[cyan]Updating system language settings...[/cyan]',
@@ -53,6 +52,7 @@ initial_boot_log_with_interrupt_v2 = [
 	# '[red]SYST[green]cho--E|_[/green]EM INTERRU[green]𓂀𓂀 𓁹𓅓𓃗𓆗[/green]PT: UNKNOWN SOURCE[/red]',
 	# '[red]ECHO PATH BREACH[green]⠛⠃⠛[/green] DETECT[green]⠛⠃[/green]ED[/red]',
 ]
+
 missing_keyboard_trace_log = [
 	'[bold green]▸ Last Known Location: /departure_node/child_unit[/bold green]',
 	'[bold green]▸ Environmental Artifacts:[/bold green]',

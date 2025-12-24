@@ -9,7 +9,7 @@ def directive_sequence(session) -> TerminalSequence:
 
 
 def initial(session) -> TerminalSequence:
-	session.state.run_mirror_clue_directive_initial()
+	session.state.run_mirror_clue_directive()
 
 	effects = session.effects
 	console = session.console
@@ -47,13 +47,13 @@ def initial(session) -> TerminalSequence:
 	)
 
 
-def mirror_clue_directive_initial(session) -> TerminalSequence:
-	session.state.run_mirror_clue_directive_repeat()
+# def mirror_clue_directive_initial(session) -> TerminalSequence:
+# 	session.state.run_mirror_clue_directive_repeat()
 
-	return mirror_clue_directive_repeat(session)
+# 	return mirror_clue_directive_repeat(session)
 
 
-def mirror_clue_directive_repeat(session) -> TerminalSequence:
+def mirror_clue_directive(session) -> TerminalSequence:
 	console = session.console
 
 	return TerminalSequence(

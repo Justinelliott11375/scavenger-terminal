@@ -5,6 +5,7 @@ from rich.progress import BarColumn, Progress
 from rich.table import Table
 
 from assets.boot_log_sequence_steps import chess_piece_book_log, treasure_island_book_log
+from sequence_types import PrintLine, TerminalSequence, Sleep
 from sequences.directive import directive_sequence
 from terminal_output import TerminalOutput
 from usb_watcher import detect_generic_usb
@@ -56,6 +57,9 @@ class CommandHandler:
 
 		# TODO: will need a refactor here to make the list of commands dynamic
 		table.add_row('help', 'List all available commands')
+
+		if self.terminal_session.state.is_audio_clue():
+			table.add_row('play', 'Play the audio clue fragment')
 		table.add_row('scan', 'Scan for connected hardware')
 		table.add_row('directive', 'Summarize current objective')
 		table.add_row('clear', 'Clear terminal screen')
@@ -65,7 +69,6 @@ class CommandHandler:
 		return TerminalOutput(renderable=table)
 
 	def handle_scan(self):
-		print(detect_generic_usb())
 		with Progress(
 			'[progress.description]{task.description}',
 			BarColumn(bar_width=None),
@@ -79,8 +82,28 @@ class CommandHandler:
 				sleep(0.1)  # optional: longer delay based on stage
 				progress.update(task, advance=2)
 
-		# Extract this to somewhere else
-		# self.console.print(
+		usb_white_king_detected = detect_generic_usb()
+
+		if usb_white_king_detected:
+			self.terminal_session.state.insert_white_king_usb()
+
+			return TerminalSequence(name='Scan Results', steps=[
+				PrintLine('DEVICE DETECTED: USB STORAGE', 'green'),
+				Sleep(1),
+				PrintLine('verifying token...', 'green'),
+				Sleep(1),
+				PrintLine('signature match: MONARCH//DELTA_Ξ', 'green'),
+				Sleep(1),
+				PrintLine('output stuff here about typing "help"', 'green'),
+				Sleep(1),
+				PrintLine('output stuff here about typing "directives"', 'green'),
+			])
+
+		return TerminalSequence(name='Scan Results', steps=[
+			PrintLine('DEVICE DETECTED: KEYBOARD', 'green'),
+			PrintLine('MODEL: WR-NIVENS-K3YBRD', 'green')
+		])
+
 		return TerminalOutput(
 			renderable=Panel.fit(
 				'\n'.join(
