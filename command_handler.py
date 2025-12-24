@@ -173,7 +173,7 @@ class CommandHandler:
 					Sleep(2.0),
 					PrintLine("[SYS] Type 'stop' at any time to halt playback.", "cyan"),
 					Sleep(0.5),
-					Call(lambda: play_audio(self.terminal_session.state)),
+					Call(lambda: play_audio(self.terminal_session.state.state)),
 					Sleep(0.2),
 				])
 
