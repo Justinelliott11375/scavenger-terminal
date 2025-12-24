@@ -7,6 +7,7 @@ from rich.table import Table
 from assets.boot_log_sequence_steps import chess_piece_book_log, treasure_island_book_log
 from sequences.directive import directive_sequence
 from terminal_output import TerminalOutput
+from usb_watcher import gate_run
 
 
 class CommandHandler:
@@ -57,13 +58,14 @@ class CommandHandler:
 		table.add_row('help', 'List all available commands')
 		table.add_row('scan', 'Scan for connected hardware')
 		table.add_row('directive', 'Summarize current objective')
-		table.add_row('clear', 'Clear the terminal screen')
+		table.add_row('clear', 'Clear terminal screen')
 		# table.add_row('exit', 'Terminate session')
 
 		# self.console.print(table)
 		return TerminalOutput(renderable=table)
 
 	def handle_scan(self):
+		gate_run(timeout=5)
 		with Progress(
 			'[progress.description]{task.description}',
 			BarColumn(bar_width=None),
