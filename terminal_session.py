@@ -16,6 +16,7 @@ from assets.boot_log_sequence_steps import (
 	missing_keyboard_trace_log,
 	restored_diagnostics_log,
 )
+from audio_utils import set_output_volume
 from command_handler import CommandHandler
 from effects import Effects
 from event_bus import EventBus
@@ -37,6 +38,8 @@ class TerminalSession:
 		# self.state = {'keyboard_connected': False, 'available_commands': ['help', 'status', 'exit']}
 		self.events = EventBus()
 		self.runner = SequenceRunner(self.console, self.effects)
+
+		set_output_volume()
 
 	def run(self):
 		# self.run_boot_sequence()

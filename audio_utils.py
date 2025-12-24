@@ -4,6 +4,8 @@ from pathlib import Path
 # Adjust this to match your repo layout
 AUDIO_DIR = Path(__file__).parent / "assets" / "audio"
 APLAY_DEVICE = 'plughw:1,0'
+AUDIO_CARD_INDEX = 1
+AUDIO_CONTROL = 'PCM'
 
 _current_proc: subprocess.Popen | None = None
 audio_files_by_state = {
@@ -20,6 +22,7 @@ def play_audio(state: str) -> None:
 	global _current_proc
 
 	filename = audio_files_by_state.get(state)
+	print(f"[AUDIO] Playing audio for state '{state}': {filename}")
 	path = AUDIO_DIR / filename
 
 	if not path.exists():
@@ -74,3 +77,23 @@ def stop_audio() -> None:
 		pass
 	_current_proc = None
 	return True
+
+
+def set_output_volume(volume: int = 100) -> None:
+	"""
+	Set the output volume using 'amixer'.
+	Volume should be an integer between 0 and 100.
+	"""
+	try:
+		cmd = [
+			'amixer',
+			'-c',
+			str(AUDIO_CARD_INDEX),
+			'sset',
+			AUDIO_CONTROL,
+			f'{volume}%',
+		]
+
+		subprocess.run(cmd, check=False, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+	except Exception as e:
+		print(f"[AUDIO] Failed to set volume: {e}")
