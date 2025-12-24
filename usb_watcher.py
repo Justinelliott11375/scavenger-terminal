@@ -10,9 +10,9 @@ MODEL_ID = '1234'
 TARGET_SIZE_MB = 960
 SIZE_TOL_MB = 128  # +/- window to allow slight formatting differences
 
-TARGET_LABEL = "WR_KING2"
+TARGET_LABEL = "EAD2-9468"
 
-
+# EAD2-9468
 def on_correct_usb_inserted():
 	# TODO: implement reaction to correct USB insertion here
 	print('[USB] Correct generic stick detected. Advancing game step.', flush=True)
@@ -80,7 +80,7 @@ def matches_black_king_fingerprint(device) -> bool:
 	if device.get('ID_BUS') != 'usb':
 		return False
 
-	label = device.get('ID_FS_LABEL')
+	label = device.get('ID_FS_UUID')
 	print(f'found label: {label}')
 	time.sleep(2)
 
