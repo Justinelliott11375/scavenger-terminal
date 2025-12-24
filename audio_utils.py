@@ -23,9 +23,6 @@ def play_audio(state: str) -> None:
 	global _current_proc
 
 	filename = audio_files_by_state.get(state)
-	print(state)
-	print(filename)
-	sleep(3)
 	path = AUDIO_DIR / filename
 
 	if not path.exists():

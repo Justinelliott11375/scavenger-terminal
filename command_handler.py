@@ -211,6 +211,61 @@ class CommandHandler:
 						Sleep(0.5),
 					])
 
+		if self.terminal_session.state.is_audio_unreversed():
+			if command == 'denoise':
+				self.terminal_session.state.edit_audio_denoise()
+				return TerminalSequence(name='Audio - Denoise',
+					steps=[
+						PrintLine("[SYS] Applying noise reduction filter...", "cyan"),
+						Sleep(3.0),
+						PrintLine("[SYS] Noise reduction complete.", "cyan"),
+					])
+			elif command == 'clean':
+				return TerminalSequence(name='Audio - Clean',
+					steps=[
+						PrintLine("[SYS] Generic cleanup refused.", "cyan"),
+						Sleep(1.0),
+        				PrintLine("Surface filters can’t separate voice from interference at this level.", "cyan"),
+						Sleep(1.0),
+    					PrintLine('Hint: run a proper noise profile first with "denoise".', "cyan"),
+						Sleep(0.5),
+					])
+			elif command == 'reverse':
+				return TerminalSequence(name='Audio - Reverse',
+					steps=[
+						PrintLine("[SYS] Playback direction unchanged.", "cyan"),
+						Sleep(1.0),
+						PrintLine("The audio fragment is already playing forward.", "cyan"),
+						Sleep(0.5),
+					])
+
+		if self.terminal_session.state.is_audio_denoised():
+			if command == 'clean':
+				self.terminal_session.state.edit_audio_clean()
+				return TerminalSequence(name='Audio - Clean',
+					steps=[
+						PrintLine("[SYS] Applying final cleanup filter...", "cyan"),
+						Sleep(3.0),
+						PrintLine("[SYS] Audio cleanup complete.", "cyan"),
+					])
+			elif command == 'denoise':
+				return TerminalSequence(name='Audio - Denoise',
+					steps=[
+						PrintLine("[SYS] Noise reduction already applied.", "cyan"),
+						Sleep(1.0),
+						PrintLine("Further denoising may degrade audio quality.", "cyan"),
+						Sleep(0.5),
+					])
+			elif command == 'reverse':
+				return TerminalSequence(name='Audio - Reverse',
+					steps=[
+						PrintLine("[SYS] Playback direction unchanged.", "cyan"),
+						Sleep(1.0),
+						PrintLine("The audio fragment is already playing forward.", "cyan"),
+						Sleep(0.5),
+					])
+
+
 
 
 	def handle_stop_audio(self) -> TerminalSequence:
