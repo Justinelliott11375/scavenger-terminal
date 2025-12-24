@@ -10,6 +10,8 @@ MODEL_ID = '1234'
 TARGET_SIZE_MB = 960
 SIZE_TOL_MB = 128  # +/- window to allow slight formatting differences
 
+TARGET_LABEL = "WR_KING2"
+
 
 def on_correct_usb_inserted():
 	# TODO: implement reaction to correct USB insertion here
@@ -63,6 +65,18 @@ def _matches_fingerprint(device) -> bool:
 
 	return True
 
+def matches_black_king_fingerprint(device) -> bool:
+	if device.subsystem != 'block':
+		return False
+	if device.device_type not in ('disk', 'partition'):
+		return False
+
+	if device.get('ID_BUS') != 'usb':
+		return False
+
+	label = device.get('ID_FS_LABEL')
+
+	return label == TARGET_LABEL
 
 def _sweep_existing(ctx: pyudev.Context) -> bool:
 	"""Covers the 'already plugged in when we start waiting' case."""
@@ -113,6 +127,28 @@ def detect_generic_usb(timeout: float = 2.0, poll_interval: float = 0.2) -> bool
 
 	# We don't need event watching for 'scan' – a repeated sweep is simpler and safer.
 	while time.time() < end:
+		if _sweep_existing(ctx):
+			return True
+		time.sleep(poll_interval)
+
+	return False
+
+def detect_black_king_usb(timeout: float = 2.0, poll_interval: float = 0.2) -> bool:
+	if not sys.platform.startswith('linux'):
+		# On non-Linux platforms, just fail closed for now
+		# return False
+		return True
+
+	ctx = pyudev.Context()
+	end = time.time() + timeout
+
+	# We don't need event watching for 'scan' – a repeated sweep is simpler and safer.
+	while time.time() < end:
+		for dev in ctx.list_devices(subsystem='block'):
+			if matches_black_king_fingerprint(dev):
+				return True
+		return False
+
 		if _sweep_existing(ctx):
 			return True
 		time.sleep(poll_interval)
