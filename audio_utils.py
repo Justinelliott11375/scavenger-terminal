@@ -1,5 +1,6 @@
 import subprocess
 from pathlib import Path
+from time import sleep
 
 # Adjust this to match your repo layout
 AUDIO_DIR = Path(__file__).parent / "assets" / "audio"
@@ -22,7 +23,9 @@ def play_audio(state: str) -> None:
 	global _current_proc
 
 	filename = audio_files_by_state.get(state)
-	print(f"[AUDIO] Playing audio for state '{state}': {filename}")
+	print(state)
+	print(filename)
+	sleep(3)
 	path = AUDIO_DIR / filename
 
 	if not path.exists():
