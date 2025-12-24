@@ -42,8 +42,8 @@ class CommandHandler:
 			# return self.handle_directive()
 			return directive_sequence(self.terminal_session)
 		# Figure out a better name for this
-		elif command == 'audio clue deciphered':
-			return
+		elif command == 'audio':
+			return self.handle_audio()
 		else:
 			return TerminalOutput(
 				lines=["[yellow]Unknown command.[/yellow] Type 'help' for a list of valid commands."],
@@ -56,16 +56,28 @@ class CommandHandler:
 		table.add_column('Description', style='dim')
 
 		# TODO: will need a refactor here to make the list of commands dynamic
-		table.add_row('help', 'List all available commands')
+		table.add_row('help', 'List core commands')
 
 		if self.terminal_session.state.is_audio_clue():
-			table.add_row('play', 'Play the audio clue fragment')
-		table.add_row('scan', 'Scan for connected hardware')
+			table.add_row('audio', 'list audio commands')
+		table.add_row('scan', 'Scan connected hardware')
 		table.add_row('directive', 'Summarize current objective')
-		table.add_row('clear', 'Clear terminal screen')
+		# table.add_row('clear', 'Clear terminal screen')
 		# table.add_row('exit', 'Terminate session')
 
 		# self.console.print(table)
+		return TerminalOutput(renderable=table)
+
+	def handle_audio(self):
+		table = Table(show_header=True, header_style='bold green')
+		table.add_column('Command', style='cyan', no_wrap=True)
+		table.add_column('Description', style='dim')
+
+		table.add_row('play', 'play audio clue fragments')
+		table.add_row('reverse', 'play audio fragments in reverse')
+		table.add_row('boost', 'Signal boost for faint audio fragments')
+		table.add_row('clean', 'Noise reduction for audio fragments')
+
 		return TerminalOutput(renderable=table)
 
 	def handle_scan(self):
@@ -88,19 +100,32 @@ class CommandHandler:
 			self.terminal_session.state.insert_white_king_usb()
 
 			return TerminalSequence(name='Scan Results', steps=[
+				Sleep(1),
+				PrintLine('DEVICE DETECTED: KEYBOARD', 'green'),
+				Sleep(1),
+				PrintLine('MODEL: WR-NIVENS-K3YBRD', 'green'),
+				Sleep(1),
 				PrintLine('DEVICE DETECTED: USB STORAGE', 'green'),
 				Sleep(1),
 				PrintLine('verifying token...', 'green'),
 				Sleep(1),
 				PrintLine('signature match: MONARCH//DELTA_Ξ', 'green'),
 				Sleep(1),
-				PrintLine('output stuff here about typing "help"', 'green'),
+				# Put more stuff here
+				PrintLine('[SYS] New audio utilities available', 'green'),
 				Sleep(1),
-				PrintLine('output stuff here about typing "directives"', 'green'),
+				PrintLine('[SYS] Type "audio" to list available audio commands', 'green'),
+				Sleep(1),
+				PrintLine('[SYS] Type "directive" for a trace to missing ears', 'green'),
+				Sleep(1),
+				PrintLine('[SYS] Monarch USB token can be safely removed', 'green'),
+
 			])
 
 		return TerminalSequence(name='Scan Results', steps=[
+			Sleep(1),
 			PrintLine('DEVICE DETECTED: KEYBOARD', 'green'),
+			Sleep(1),
 			PrintLine('MODEL: WR-NIVENS-K3YBRD', 'green')
 		])
 

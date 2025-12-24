@@ -1,4 +1,11 @@
+
+from rich.panel import Panel
+
+from assets.boot_log_sequence_steps import missing_speaker_trace_log
 from sequence_types import Call, PrintLine, RabbitSay, Sleep, TerminalSequence
+from terminal_output import TerminalOutput
+
+
 
 
 def directive_sequence(session) -> TerminalSequence:
@@ -80,3 +87,19 @@ def mirror_clue_directive(session) -> TerminalSequence:
 			),
 		],
 	)
+
+def audio_clue(_) -> TerminalOutput:
+	return TerminalOutput(
+			renderable=Panel.fit(
+				'\n'.join(missing_speaker_trace_log),
+				title='/// Current Objective ///',
+				border_style='green',
+			)
+		)
+	return Panel(
+			'\n'.join(missing_speaker_trace_log),
+			border_style='bold green',
+			# padding=(1, 2),
+			title='Trace Log: WR-RBT-34R',
+			title_align='left',
+		)

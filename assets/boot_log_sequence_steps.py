@@ -63,6 +63,15 @@ missing_keyboard_trace_log = [
 	'[bold green]  - Minor kinetic abrasion[/bold green]',
 ]
 
+missing_speaker_trace_log = [
+    '[bold green]▸ Last Known Location: /facade_node/ornamental[/bold green]',
+    '[bold green]▸ Environmental Artifacts:[/bold green]',
+    '[bold green]  - Visible flicker[/bold green]',
+    '[bold green]  - Temperature ambient, strangely[/bold green]',
+    '[bold green]  - Crackle loop, repetition observed [/bold green]',
+    '[bold green]  - Hollow interior[/bold green]',
+]
+
 keyboard_handshake_log = [
 	'[green]:: Handshake verified[/green]',
 	'[green]:: Input device successfully connected[/green]',
