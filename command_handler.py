@@ -4,8 +4,9 @@ from rich.panel import Panel
 from rich.progress import BarColumn, Progress
 from rich.table import Table
 
+from audio_utils import play_audio
 from assets.boot_log_sequence_steps import chess_piece_book_log, treasure_island_book_log
-from sequence_types import PrintLine, TerminalSequence, Sleep
+from sequence_types import Call, PrintLine, TerminalSequence, Sleep
 from sequences.directive import directive_sequence
 from terminal_output import TerminalOutput
 from usb_watcher import detect_generic_usb
@@ -44,6 +45,8 @@ class CommandHandler:
 		# Figure out a better name for this
 		elif command == 'audio':
 			return self.handle_audio()
+		elif command == 'play':
+			return self.handle_play_audio()
 		else:
 			return TerminalOutput(
 				lines=["[yellow]Unknown command.[/yellow] Type 'help' for a list of valid commands."],
@@ -158,3 +161,13 @@ class CommandHandler:
 				border_style='green',
 			)
 		)
+
+	def handle_play_audio(self) -> TerminalSequence:
+		return TerminalSequence(name='Audio - Play Raw Fragment',
+			steps=[
+				PrintLine("[SYS] Playing audio fragment ALICE-07...", "cyan"),
+            	Sleep(0.5),
+            	Call(lambda: play_audio("morpheus_audio_clean.wav")),
+            	Sleep(0.2),
+            	PrintLine("[SYS] Playback complete.", "cyan"),
+			])

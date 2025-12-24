@@ -92,14 +92,7 @@ def audio_clue(_) -> TerminalOutput:
 	return TerminalOutput(
 			renderable=Panel.fit(
 				'\n'.join(missing_speaker_trace_log),
-				title='/// Current Objective ///',
+				title='Trace Log: WR-RBT-3AR',
 				border_style='green',
 			)
-		)
-	return Panel(
-			'\n'.join(missing_speaker_trace_log),
-			border_style='bold green',
-			# padding=(1, 2),
-			title='Trace Log: WR-RBT-34R',
-			title_align='left',
 		)
