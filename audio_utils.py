@@ -12,6 +12,8 @@ def play_audio(filename: str) -> None:
 	"""
 	print('playing audio')
 	path = AUDIO_DIR / filename
+	print(f'audio_dir: {AUDIO_DIR}')
+	print(f'filename: {filename}')
 
 	if not path.exists():
 		print(f"[AUDIO] File not found: {path}")
@@ -19,6 +21,6 @@ def play_audio(filename: str) -> None:
 	print(f"[AUDIO] Playing file: {path}")
 	try:
 		# -q = quiet (no extra ALSA spam)
-		subprocess.run(["aplay", "-q", str(path)], check=False)
+		subprocess.run(["aplay", "-q", str(path)], capture_output=True, text=True, check=False)
 	except FileNotFoundError:
 		print("[AUDIO] 'aplay' not found. Install 'alsa-utils' or adjust player command.")
