@@ -8,6 +8,9 @@ class GameState:
 		'chess_piece_book',
 		'mirror_clue_directive',
 		'audio_clue',
+		'audio_unreversed',
+		'audio_denoised',
+		'audio_cleaned',
 	]
 
 	def __init__(self):
