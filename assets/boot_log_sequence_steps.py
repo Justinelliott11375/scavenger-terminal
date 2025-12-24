@@ -72,6 +72,15 @@ missing_speaker_trace_log = [
     '[bold green]  - Hollow interior[/bold green]',
 ]
 
+missing_player_trace_log = [
+	'[bold green]▸ Last Known Location: /archive_node/analog_relic[/bold green]',
+    '[bold green]▸ Environmental Artifacts:[/bold green]',
+    '[bold green]  - Cowboy and Spacefarer chamber[/bold green]',
+    '[bold green]  - Brackets, out of reach[/bold green]',
+    '[bold green]  - Tape spools, rewind feature[/bold green]',
+    '[bold green]  - Portable, mechanical[/bold green]',
+]
+
 keyboard_handshake_log = [
 	'[green]:: Handshake verified[/green]',
 	'[green]:: Input device successfully connected[/green]',

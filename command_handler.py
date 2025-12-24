@@ -130,9 +130,21 @@ class CommandHandler:
 			])
 
 		if usb_black_king_detected:
+			self.terminal_session.state.insert_black_king_usb()
 			return TerminalSequence(name='Scan Results', steps=[
 				Sleep(1),
-				PrintLine('WE GOT HIM', 'green'),
+				PrintLine('DEVICE DETECTED: KEYBOARD', 'green'),
+				Sleep(1),
+				PrintLine('MODEL: WR-NIVENS-K3YBRD', 'green'),
+				Sleep(1),
+				PrintLine('DEVICE DETECTED: USB STORAGE', 'green'),
+				Sleep(1),
+				PrintLine('verifying token...', 'green'),
+				Sleep(1),
+				PrintLine('signature match: MONARCH//OMEGA_Ξ', 'green'),
+				Sleep(1),
+				# Put more stuff here
+				PrintLine('[SYS] Data recovered, type "directive" for device retrieval log', 'green'),
 			])
 
 		return TerminalSequence(name='Scan Results', steps=[

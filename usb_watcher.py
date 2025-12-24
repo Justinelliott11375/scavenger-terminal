@@ -73,7 +73,6 @@ def matches_black_king_fingerprint(device) -> bool:
 		return False
 
 	label = device.get('ID_FS_UUID')
-	print(f'found label: {label}')
 
 	return label == TARGET_LABEL
 

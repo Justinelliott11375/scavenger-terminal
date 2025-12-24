@@ -50,3 +50,9 @@ class GameState:
 			source='audio_denoised',
 			dest='audio_cleaned'
 		)
+
+		self.machine.add_transition(
+			trigger='insert_black_king_usb',
+			source='audio_cleaned',
+			dest='final'
+		)

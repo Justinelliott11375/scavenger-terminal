@@ -1,7 +1,7 @@
 
 from rich.panel import Panel
 
-from assets.boot_log_sequence_steps import missing_speaker_trace_log
+from assets.boot_log_sequence_steps import missing_player_trace_log, missing_speaker_trace_log
 from sequence_types import Call, PrintLine, RabbitSay, Sleep, TerminalSequence
 from terminal_output import TerminalOutput
 
@@ -87,6 +87,15 @@ def mirror_clue_directive(session) -> TerminalSequence:
 			),
 		],
 	)
+
+def final(_) -> TerminalOutput:
+	return TerminalOutput(
+			renderable=Panel.fit(
+				'\n'.join(missing_player_trace_log),
+				title='Trace Log: WR-RBT-T41L',
+				border_style='green',
+			)
+		)
 
 def audio_clue(_) -> TerminalOutput:
 	return TerminalOutput(
