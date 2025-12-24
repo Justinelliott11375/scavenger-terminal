@@ -66,6 +66,12 @@ def _matches_fingerprint(device) -> bool:
 	return True
 
 def matches_black_king_fingerprint(device) -> bool:
+
+	for key in [
+    	'ID_BUS','ID_VENDOR_ID','ID_MODEL_ID','ID_VENDOR','ID_MODEL','ID_FS_LABEL','ID_FS_UUID','DEVLINKS',
+	]:
+		print(f"  {key}: {device.get(key)}")
+		time.sleep(0.5)
 	if device.subsystem != 'block':
 		return False
 	if device.device_type not in ('disk', 'partition'):
