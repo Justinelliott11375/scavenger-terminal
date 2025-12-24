@@ -47,8 +47,6 @@ def _matches_fingerprint(device) -> bool:
 		return False
 	if device.device_type not in ('disk', 'partition'):
 		return False
-	print(f'vendor id: {device.get("ID_VENDOR_ID")}')
-	print(f'model id: {device.get("ID_MODEL_ID")}')
 	# Vendor/Model check (most important for this generic device)
 	if device.get('ID_VENDOR_ID') != VENDOR_ID:
 		return False
@@ -66,12 +64,6 @@ def _matches_fingerprint(device) -> bool:
 	return True
 
 def matches_black_king_fingerprint(device) -> bool:
-
-	for key in [
-    	'ID_BUS','ID_VENDOR_ID','ID_MODEL_ID','ID_VENDOR','ID_MODEL','ID_FS_LABEL','ID_FS_UUID','DEVLINKS',
-	]:
-		print(f"  {key}: {device.get(key)}")
-		time.sleep(0.5)
 	if device.subsystem != 'block':
 		return False
 	if device.device_type not in ('disk', 'partition'):
@@ -82,7 +74,6 @@ def matches_black_king_fingerprint(device) -> bool:
 
 	label = device.get('ID_FS_UUID')
 	print(f'found label: {label}')
-	time.sleep(2)
 
 	return label == TARGET_LABEL
 
@@ -142,8 +133,6 @@ def detect_generic_usb(timeout: float = 2.0, poll_interval: float = 0.2) -> bool
 	return False
 
 def detect_black_king_usb(timeout: float = 2.0, poll_interval: float = 0.2) -> bool:
-	print('checking for black king')
-	time.sleep(2)
 	if not sys.platform.startswith('linux'):
 		# On non-Linux platforms, just fail closed for now
 		# return False
